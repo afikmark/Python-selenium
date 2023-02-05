@@ -55,8 +55,6 @@ class BasePage:
         if by not in 'css, xpath, link_text':
             pytest.exit('enter a valid selector type: css, xpath, link_text')
         element = None
-        by = by.lower()
-        selector = selector.lower()
         if by == 'css':
             element = self._driver.find_element(by=By.CSS_SELECTOR, value=selector)
         elif by == 'xpath':
