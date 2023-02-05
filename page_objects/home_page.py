@@ -13,7 +13,6 @@ class HomePage(BasePage):
         return {
             'search_button': self.find_element(by='css', selector='.ast-header-search[data-section]'),
             'search_bar': self.find_element(by='css', selector='.search-field[type=search]'),
-            'contact_us_button': self.find_element(by='xpath', selector='//*[@id="ast-hf-menu-1"]/li/a[contains(text(),"Contact Us")]')
         }
 
     def search(self, search_params: str):
@@ -26,7 +25,7 @@ class HomePage(BasePage):
             self.fill_text(self.elements['search_bar'], search_params)
         except NoSuchElementException:
             print(NoSuchElementException)
-            self.close_driver()
+            self.quit_driver()
         self.action('enter')
 
     def nav_contact_us(self):

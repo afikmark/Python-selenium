@@ -24,4 +24,4 @@ class ResultsPage(BasePage):
             return results
         except NoSuchElementException:
             print("No such element")
-            self.close_driver()
+            self.quit_driver()

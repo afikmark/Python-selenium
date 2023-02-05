@@ -1,5 +1,4 @@
-from typing import Type
-from multipledispatch import dispatch
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
@@ -23,8 +22,8 @@ class BasePage:
     def get_driver(self):
         return self._driver
 
-    def close_driver(self):
-        self._driver.close()
+    def quit_driver(self):
+        self._driver.quit()
 
     def click(self, web_element: WebElement):
         """
@@ -51,7 +50,13 @@ class BasePage:
         Receives css selector
         returns web element object
         """
+        if not selector:
+            pytest.exit("please use a valid selector")
+        if by not in 'css, xpath, link_text':
+            pytest.exit('enter a valid selector type: css, xpath, link_text')
         element = None
+        by = by.lower()
+        selector = selector.lower()
         if by == 'css':
             element = self._driver.find_element(by=By.CSS_SELECTOR, value=selector)
         elif by == 'xpath':
@@ -65,12 +70,18 @@ class BasePage:
         Receives css selector for a list/container
         returns a list of web elements
         """
+        if not selector:
+            pytest.exit("please use a valid selector")
+        if by not in 'css, xpath, link_text':
+            pytest.exit('enter a valid selector type: css, xpath, link_text')
 
         elements = None
         if by == 'css':
             elements = self._driver.find_elements(by=By.CSS_SELECTOR, value=selector)
         elif by == 'xpath':
             elements = self._driver.find_elements(by=By.XPATH, value=selector)
+        elif by == "link_text":
+            elements = self._driver.find_elements(by=By.LINK_TEXT, value=selector)
         return elements
 
     def explicit_wait_clickable(self, selector: str):

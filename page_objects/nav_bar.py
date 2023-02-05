@@ -1,3 +1,5 @@
+import pytest
+from selenium.common import NoSuchElementException
 from .base_page import BasePage
 from functools import cached_property
 
@@ -19,7 +21,10 @@ class NavBar(BasePage):
         }
 
     def navigate(self, category: str):
+        if not category:
+            pytest.exit("please use a valid selector")
         try:
             self.click(self.navbar[f"{category.lower()}"])
-        except KeyError:
-            print('key not found, please choose a valid navigation bar category')
+        except (KeyError, NoSuchElementException) as e:
+            print(e)
+            self.quit_driver()

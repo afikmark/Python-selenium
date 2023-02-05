@@ -1,7 +1,4 @@
 from functools import cached_property
-
-from selenium.common import NoSuchElementException
-
 from page_objects.base_page import BasePage
 from utils.format_filler import ContactUsForm
 

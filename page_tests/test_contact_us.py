@@ -1,7 +1,7 @@
 import pytest
-
 from page_tests.base_test import TestBase
 from page_objects.contact_page import ContactUsPage
+from page_objects.nav_bar import NavBar
 
 
 class TestRegistration(TestBase):
@@ -19,12 +19,19 @@ class TestRegistration(TestBase):
     @pytest.fixture
     def contact_page(self, driver) -> ContactUsPage:
         """
-        :returns regitration page
+        returns contact us page
         """
         return ContactUsPage(driver)
 
-    def test_contact(self, driver, info, contact_page, home_page_obj):
-        home_page_obj.nav_contact_us()
+    @pytest.fixture
+    def nav_bar(self, driver) -> NavBar:
+        """
+        :returns NavBar Page
+        """
+        return NavBar(driver)
+
+    def test_contact(self, driver, info, contact_page, nav_bar):
+        nav_bar.navigate('Contact Us')
         submission_text = contact_page.contact(
             name=info['name'],
             email=info['email'],
