@@ -1,6 +1,6 @@
 from functools import cached_property
 from page_objects.base_page import BasePage
-from utils.format_filler import ContactUsForm
+from utils.forms import ContactUsForm
 
 
 class ContactUsPage(BasePage):
