@@ -19,7 +19,7 @@ class HomePage(BasePage):
     def search(self, search_params: str):
         """
         :param search_params: str
-        searches in the search bar on the amazon website
+        searches by given input
         """
         try:
             self.click(self.elements['search_button'])
