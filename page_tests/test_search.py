@@ -1,24 +1,10 @@
 import pytest
 
 from .base_test import TestBase
-from page_objects.home_page import HomePage
-from page_objects.results_page import ResultsPage
+from ui_test_urls import ui_constants as uic
+
 
 class TestRegistration(TestBase):
-
-    @pytest.fixture
-    def home_page(self, driver) -> HomePage:
-        """
-        :returns home page object
-        """
-        return HomePage(driver)
-
-    @pytest.fixture
-    def results_page(self, driver) -> ResultsPage:
-        """
-        :returns home page object
-        """
-        return ResultsPage(driver)
 
     @pytest.fixture
     def shoes(self):
@@ -30,6 +16,7 @@ class TestRegistration(TestBase):
         2.search for shoes
         3.compare results to expected results
         """
+        driver.get(uic.HOME_PAGE_URL)
         search_input = 'Shoes'
         home_page.search(search_input)
         actual_set = set(results_page.get_results())

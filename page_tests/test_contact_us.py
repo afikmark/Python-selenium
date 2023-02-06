@@ -16,20 +16,6 @@ class TestRegistration(TestBase):
         }
         return info
 
-    @pytest.fixture
-    def contact_page(self, driver) -> ContactUsPage:
-        """
-        returns contact us page
-        """
-        return ContactUsPage(driver)
-
-    @pytest.fixture
-    def nav_bar(self, driver) -> NavBar:
-        """
-        :returns NavBar Page
-        """
-        return NavBar(driver)
-
     def test_contact(self, driver, info, contact_page, nav_bar):
         nav_bar.navigate('Contact Us')
         submission_text = contact_page.contact(

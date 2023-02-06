@@ -2,20 +2,48 @@ import pytest
 from selenium import webdriver
 from selenium.common import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
-from ui_test_urls import ui_constants as uic
+
+from page_objects.contact_page import ContactUsPage
+from page_objects.home_page import HomePage
+from page_objects.nav_bar import NavBar
+from page_objects.results_page import ResultsPage
+
+
 
 class TestBase:
     @pytest.fixture
     def driver(self):
         try:
-            driver = webdriver.Chrome(ChromeDriverManager().install())
+            driver = webdriver.Chrome()
             driver.maximize_window()
-            driver.implicitly_wait(10)
-            driver.get(uic.HOME_PAGE_URL)
             return driver
         except TimeoutException:
             print("The request has timed out")
 
+    @pytest.fixture
+    def home_page(self, driver) -> HomePage:
+        """
+        :returns home page object
+        """
+        return HomePage(driver)
 
+    @pytest.fixture
+    def results_page(self, driver) -> ResultsPage:
+        """
+        :returns home page object
+        """
+        return ResultsPage(driver)
 
+    @pytest.fixture
+    def contact_page(self, driver) -> ContactUsPage:
+        """
+        returns contact us page
+        """
+        return ContactUsPage(driver)
 
+    @pytest.fixture
+    def nav_bar(self, driver) -> NavBar:
+        """
+        :returns NavBar Page
+        """
+        return NavBar(driver)
