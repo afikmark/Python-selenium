@@ -1,8 +1,6 @@
 import pytest
 from selenium import webdriver
 from selenium.common import TimeoutException
-from webdriver_manager.chrome import ChromeDriverManager
-
 from page_objects.contact_page import ContactUsPage
 from page_objects.home_page import HomePage
 from page_objects.nav_bar import NavBar
