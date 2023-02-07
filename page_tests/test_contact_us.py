@@ -1,8 +1,12 @@
 import pytest
 from page_tests.base_test import TestBase
 from ui_test_urls import ui_constants as uic
+import allure
 
 
+@allure.epic("Contact Us")
+@allure.story("Contact Us functionality test")
+@allure.severity(allure.severity_level.MINOR)
 class TestRegistration(TestBase):
 
     @pytest.fixture
@@ -15,6 +19,8 @@ class TestRegistration(TestBase):
         }
         return info
 
+    @allure.description("Send a message using the Contact Us Form")
+    @allure.title("Test the contact Us form")
     def test_contact(self, driver, info, contact_page, nav_bar):
         driver.get(uic.HOME_PAGE_URL)
         nav_bar.navigate('Contact Us')
