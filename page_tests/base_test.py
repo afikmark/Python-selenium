@@ -59,8 +59,7 @@ class TestBase:
 
     @pytest.fixture(autouse=True)
     def test_details(self, driver):
-
-        result_path = r'..\..\.jenkins\workspace\AutomationTests\allure-results'
+        result_path = os.getcwd() + r'\\allure-results'
         details = {
             'name': driver.name,
             'version': driver.capabilities['browserVersion']
