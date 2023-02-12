@@ -32,9 +32,7 @@ class HomePage(BasePage):
         searches by given input
         """
         try:
-            # self.click(self.elements['search_button'])
             self.click(self.get_element('search_button'))
-            # self.fill_text(self.elements['search_bar'], search_params)
             self.fill_text(self.get_element('search_bar'), search_params)
         except NoSuchElementException:
             print(NoSuchElementException)
