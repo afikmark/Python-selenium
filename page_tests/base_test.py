@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from selenium import webdriver
 from selenium.common import TimeoutException
@@ -8,6 +10,7 @@ from page_objects.results_page import ResultsPage
 
 
 class TestBase:
+
     @pytest.fixture
     def driver(self):
         try:
@@ -44,3 +47,24 @@ class TestBase:
         :returns NavBar Page
         """
         return NavBar(driver)
+
+    @pytest.fixture
+    def get_details(self):
+        driver = self.driver
+        return {
+            'name': driver.name,
+            'version': driver.capabilities['browserVersion']
+
+        }
+
+    @pytest.fixture(autouse=True)
+    def test_details(self, driver):
+
+        result_path = r'..\..\.jenkins\workspace\AutomationTests\allure-results'
+        details = {
+            'name': driver.name,
+            'version': driver.capabilities['browserVersion']
+        }
+
+        with open(f'{result_path}/environment.properties', 'w') as f:
+            f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
