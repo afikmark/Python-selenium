@@ -1,6 +1,8 @@
 from functools import cached_property
+from typing import Type
+
 from page_objects.base_page import BasePage
-from utils.forms import ContactUsForm
+from utils.forms import ContactUs
 from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -46,8 +48,7 @@ class ContactUsPage(BasePage):
         self.click(continue_btn)
 
     def contact(self, **user_info):
-        contact_form = ContactUsForm(
-            self.get_driver(),
+        contact_form = ContactUs(
             name=user_info['name'],
             email=user_info['email'],
             subject=user_info['subject'],

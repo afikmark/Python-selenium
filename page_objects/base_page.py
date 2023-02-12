@@ -35,7 +35,8 @@ class BasePage:
         element = self._wait.until(expected_conditions.element_to_be_clickable(web_element))
         element.click()
 
-    def fill_text(self, web_element: WebElement, txt: str):
+    @staticmethod
+    def fill_text(web_element: WebElement, txt: str):
         """
         Receives input type web element and text value
         Wait until the element is visible

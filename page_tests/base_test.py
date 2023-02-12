@@ -11,7 +11,7 @@ from page_objects.results_page import ResultsPage
 
 class TestBase:
 
-    @pytest.fixture
+    @pytest.fixture(scope="session")
     def driver(self):
         try:
             driver = webdriver.Chrome()
@@ -66,9 +66,11 @@ class TestBase:
             'version': driver.capabilities['browserVersion']
         }
         try:
-            with open(f'{result_path}\environment.properties', 'w') as f:
-                f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+            if not result_path:
+                with open(f'{relative}\environment.properties', 'w') as f:
+                    f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+            else:
+                with open(f'{result_path}\environment.properties', 'w') as f:
+                    f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
         except FileNotFoundError as e:
             print(f'File not found', e)
-            with open(f'{relative}\environment.properties', 'w') as f:
-                f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
