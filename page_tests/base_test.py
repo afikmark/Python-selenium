@@ -61,7 +61,7 @@ class TestBase:
     def test_details(self, driver):
         result_path = os.getcwd() + r'\\allure-results'
         details = {
-            'name': driver.name,
+            'name': driver.name.capitalize(),
             'version': driver.capabilities['browserVersion']
         }
 
