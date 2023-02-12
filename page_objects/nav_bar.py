@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
 
 
-@dataclass
+@dataclass(frozen=True)
 class NavBarElements:
     home: str = '//*[@id="ast-desktop-header"]//*[@class="menu-link"][contains(text(),"Home")]'
     store: str = '//*[@id="ast-desktop-header"]//*[@class="menu-link"][contains(text(),"Store")]'

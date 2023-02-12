@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
 
 
-@dataclass
+@dataclass(frozen=True)
 class HomePageElements:
     search_btn: str = '.ast-header-search[data-section]'
     search_bar: str = '.search-field[type=search]'

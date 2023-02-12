@@ -59,11 +59,16 @@ class TestBase:
 
     @pytest.fixture(autouse=True)
     def test_details(self, driver):
-        result_path = os.getcwd() + r'\\allure-results'
+        result_path = os.getcwd() + r'\allure-results'
+        relative = os.path.abspath("..//") + r'\allure-results'
         details = {
             'name': driver.name.capitalize(),
             'version': driver.capabilities['browserVersion']
         }
-
-        with open(f'{result_path}/environment.properties', 'w') as f:
-            f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+        try:
+            with open(f'{result_path}\environment.properties', 'w') as f:
+                f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+        except FileNotFoundError as e:
+            print(f'File not found', e)
+            with open(f'{relative}\environment.properties', 'w') as f:
+                f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
