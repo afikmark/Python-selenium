@@ -9,5 +9,7 @@ https://atid.store/
 
 ### Run
 cd to page_tests directory
-enter ```"pytest"``` in the terminal
+enter ```"--alluredir=.\allure-results"``` in the terminal
+## view report:
+enter ```"allure serve .\allure-results" ```
 
