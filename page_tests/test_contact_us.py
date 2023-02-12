@@ -7,7 +7,7 @@ import allure
 @allure.epic("Contact Us")
 @allure.story("Contact Us functionality test")
 @allure.severity(allure.severity_level.MINOR)
-class TestRegistration(TestBase):
+class TestContactUs(TestBase):
 
     @pytest.fixture
     def info(self) -> dict:

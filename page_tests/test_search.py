@@ -8,7 +8,7 @@ from ui_test_urls import ui_constants as uic
 @allure.epic("Search")
 @allure.story("Search feature functionality test")
 @allure.severity(allure.severity_level.CRITICAL)
-class TestRegistration(TestBase):
+class TestSearch(TestBase):
 
     @pytest.fixture
     def shoes(self):
