@@ -7,9 +7,13 @@ https://atid.store/
 * Pytest
 * Selenium
 
-### Run
+### Run:
 cd to page_tests directory
-enter ```"--alluredir=.\allure-results"``` in the terminal
-## view report:
-enter ```"allure serve .\allure-results" ```
+
+enter ```"--alluredir=.\allure-results"```
+in the terminal
+### view report:
+enter 
+```"allure serve .\allure-results" ``` 
+in the terminal
 
