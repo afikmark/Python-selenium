@@ -22,7 +22,7 @@ class TestRegistration(TestBase):
         2.search for shoes
         3.compare results to expected results
         """
-        driver.get(uic.HOME_PAGE_URL)
+        driver.get(uic.HOME_PAGE)
         search_input = 'Shoes'
         home_page.search(search_input)
         actual_set = set(results_page.get_results())

@@ -10,7 +10,7 @@ import allure
 class TestRegistration(TestBase):
 
     @pytest.fixture
-    def info(self):
+    def info(self) -> dict:
         info = {
             "name": "testername",
             'email': 'testermail@gmail.com',
@@ -19,15 +19,20 @@ class TestRegistration(TestBase):
         }
         return info
 
+    @pytest.fixture
+    def expected_message(self) -> str:
+        return "Thanks for contacting us! We will be in touch with you shortly."
+
     @allure.description("Send a message using the Contact Us Form")
     @allure.title("Test the contact Us form")
-    def test_contact(self, driver, info, contact_page, nav_bar):
-        driver.get(uic.HOME_PAGE_URL)
+    def test_contact(self, driver, info, contact_page, nav_bar, expected_message):
+        driver.get(uic.HOME_PAGE)
         nav_bar.navigate('Contact Us')
+        assert driver.current_url == uic.CONTACT_US
         submission_text = contact_page.contact(
             name=info['name'],
             email=info['email'],
             subject=info['subject'],
             message=info['message'])
-        expected = "Thanks for contacting us! We will be in touch with you shortly."
+        expected = expected_message
         assert submission_text == expected

@@ -7,7 +7,6 @@ from page_objects.nav_bar import NavBar
 from page_objects.results_page import ResultsPage
 
 
-
 class TestBase:
     @pytest.fixture
     def driver(self):
