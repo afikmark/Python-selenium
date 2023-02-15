@@ -1,6 +1,4 @@
 from functools import cached_property
-from typing import Type
-
 from page_objects.base_page import BasePage
 from utils.forms import ContactUs
 from dataclasses import dataclass

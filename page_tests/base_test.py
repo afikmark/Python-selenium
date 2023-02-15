@@ -1,12 +1,12 @@
 import os
 
 import pytest
-from selenium import webdriver
 from selenium.common import TimeoutException
 from page_objects.contact_page import ContactUsPage
 from page_objects.home_page import HomePage
 from page_objects.nav_bar import NavBar
 from page_objects.results_page import ResultsPage
+from .conftest import Drivers, create_driver, create_options
 
 
 class TestBase:
@@ -14,8 +14,10 @@ class TestBase:
     @pytest.fixture(scope="session")
     def driver(self):
         try:
-            driver = webdriver.Chrome()
-            driver.maximize_window()
+            options = create_options(Drivers.CHROME)
+            options.add_argument("start-maximized")
+            driver = create_driver(browser_type=Drivers.FIREFOX)
+
             return driver
         except TimeoutException:
             print("The request has timed out")
