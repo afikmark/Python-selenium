@@ -14,8 +14,8 @@ class TestBase:
     @pytest.fixture(scope="session")
     def driver(self):
         try:
-            driver = create_driver(browser_type=Drivers.FIREFOX)
-            if driver.name == 'firefox':
+            driver = create_driver(browser_type=Drivers.EDGE)
+            if driver.name == Drivers.FIREFOX.value.lower():
                 driver.maximize_window()
             return driver
         except TimeoutException:
