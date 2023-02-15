@@ -1,4 +1,5 @@
 import pytest
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
@@ -7,6 +8,8 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from enums.locators import Locators
+from enum import Enum
 
 
 class BasePage:
@@ -46,42 +49,41 @@ class BasePage:
         web_element.clear()
         web_element.send_keys(txt)
 
-    def find_element(self, by, selector) -> WebElement:
+    def find_element(self, by: Enum, selector: str) -> WebElement:
         """
-        Receives css selector
+        Receives css selector and locator type
         returns web element object
         """
         if not selector:
             pytest.exit("please use a valid selector")
-        if by not in 'css, xpath, link_text':
-            pytest.exit('enter a valid selector type: css, xpath, link_text')
-        element = None
-        if by == 'css':
-            element = self._driver.find_element(by=By.CSS_SELECTOR, value=selector)
-        elif by == 'xpath':
-            element = self._driver.find_element(by=By.XPATH, value=selector)
-        elif by == "link_text":
-            element = self._driver.find_element(by=By.LINK_TEXT, value=selector)
-        return element
+        try:
+            match by:
+                case Locators.CSS:
+                    return self._driver.find_element(by=By.CSS_SELECTOR, value=selector)
+                case Locators.XPATH:
+                    return self._driver.find_element(by=By.XPATH, value=selector)
+                case _:
+                    raise ValueError("Wrong locator type!")
+        except NoSuchElementException as e:
+            print(e)
 
-    def find_elements(self, by, selector) -> list[WebElement]:
+    def find_elements(self, by: Enum, selector: str) -> list[WebElement]:
         """
         Receives css selector for a list/container
         returns a list of web elements
         """
         if not selector:
             pytest.exit("please use a valid selector")
-        if by not in 'css, xpath, link_text':
-            pytest.exit('enter a valid selector type: css, xpath, link_text')
-
-        elements = None
-        if by == 'css':
-            elements = self._driver.find_elements(by=By.CSS_SELECTOR, value=selector)
-        elif by == 'xpath':
-            elements = self._driver.find_elements(by=By.XPATH, value=selector)
-        elif by == "link_text":
-            elements = self._driver.find_elements(by=By.LINK_TEXT, value=selector)
-        return elements
+        try:
+            match by:
+                case Locators.CSS:
+                    return self._driver.find_elements(by=By.CSS_SELECTOR, value=selector)
+                case Locators.XPATH:
+                    return self._driver.find_elements(by=By.XPATH, value=selector)
+                case _:
+                    raise ValueError("Wrong locator type!")
+        except NoSuchElementException as e:
+            print(e)
 
     def explicit_wait_clickable(self, selector: str) -> None:
         """

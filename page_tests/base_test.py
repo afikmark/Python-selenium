@@ -1,5 +1,6 @@
 import os
 
+import allure
 import pytest
 from selenium.common import TimeoutException
 from page_objects.contact_page import ContactUsPage
@@ -62,7 +63,8 @@ class TestBase:
         try:
             details = {
                 'name': driver.name.capitalize(),
-                'version': driver.capabilities['browserVersion']
+                'version': driver.capabilities['browserVersion'],
+                'platform': driver.capabilities['platformName']
             }
 
             if not result_path:

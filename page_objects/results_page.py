@@ -1,5 +1,7 @@
 from selenium.common import NoSuchElementException
 from functools import cached_property
+
+from enums.locators import Locators
 from page_objects.base_page import BasePage
 from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
@@ -15,10 +17,10 @@ class ResultsPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
-    @cached_property
+    @property
     def elements(self) -> dict:
         return {
-            'result_links': self.find_elements(by='css', selector=ResultPageElements.result_links)
+            'result_links': self.find_elements(by=Locators.CSS, selector=ResultPageElements.result_links)
         }
 
     def get_element(self, element: str) -> list[WebElement]:

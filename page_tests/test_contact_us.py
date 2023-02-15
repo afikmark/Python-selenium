@@ -35,4 +35,4 @@ class TestContactUs(TestBase):
             subject=info['subject'],
             message=info['message'])
         expected = expected_message
-        assert submission_text == expected
+        assert submission_text == expected, f"expected {expected_message} got {submission_text}"
