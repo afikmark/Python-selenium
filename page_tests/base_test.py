@@ -14,7 +14,7 @@ class TestBase:
     @pytest.fixture(scope="session")
     def driver(self):
         try:
-            driver = create_driver(browser_type=Drivers.EDGE)
+            driver = create_driver(browser_type=Drivers.CHROME)
             if driver.name == Drivers.FIREFOX.value.lower():
                 driver.maximize_window()
             return driver
@@ -66,10 +66,10 @@ class TestBase:
             }
 
             if not result_path:
-                with open(f'{relative}\environment.properties', 'w') as f:
+                with open(f'{relative}/environment.properties', 'w') as f:
                     f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
             else:
-                with open(f'{result_path}\environment.properties', 'w') as f:
+                with open(f'{result_path}/environment.properties', 'w') as f:
                     f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
         except (FileNotFoundError, AttributeError) as e:
             print(e)
