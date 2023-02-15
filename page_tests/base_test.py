@@ -66,12 +66,13 @@ class TestBase:
                 'version': driver.capabilities['browserVersion'],
                 'platform': driver.capabilities['platformName']
             }
+            info = f'Browser={details["name"]}\nVersion={details["version"]}\nPlatform={details["platform"]}'
 
             if not result_path:
                 with open(f'{relative}/environment.properties', 'w') as f:
-                    f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+                    f.write(info)
             else:
                 with open(f'{result_path}/environment.properties', 'w') as f:
-                    f.write(f'Browser={details["name"]}\nVersion={details["version"]}')
+                    f.write(info)
         except (FileNotFoundError, AttributeError) as e:
             print(e)
