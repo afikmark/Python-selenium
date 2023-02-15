@@ -23,7 +23,7 @@ class TestSearch(TestBase):
         3.compare results to expected results
         """
         driver.get(uic.HOME_PAGE)
-        search_input = 'Shoes'
+        search_input = "Shoes"
         home_page.search(search_input)
         actual_set = set(results_page.get_results())
         is_eq = [x for x in shoes if x in actual_set]

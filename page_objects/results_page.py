@@ -16,7 +16,7 @@ class ResultsPage(BasePage):
         super().__init__(driver)
 
     @cached_property
-    def elements(self):
+    def elements(self) -> dict:
         return {
             'result_links': self.find_elements(by='css', selector=ResultPageElements.result_links)
         }

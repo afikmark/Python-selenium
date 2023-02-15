@@ -19,13 +19,13 @@ class BasePage:
         self._driver = driver
         self._wait = WebDriverWait(self._driver, 10)
 
-    def get_driver(self):
+    def get_driver(self) -> webdriver:
         return self._driver
 
-    def quit_driver(self):
+    def quit_driver(self) -> None:
         self._driver.quit()
 
-    def click(self, web_element: WebElement):
+    def click(self, web_element: WebElement) -> None:
         """
         clicks on element if element is clickable
         if the clickable opens a new tab it is added to
@@ -46,7 +46,7 @@ class BasePage:
         web_element.clear()
         web_element.send_keys(txt)
 
-    def find_element(self, by, selector):
+    def find_element(self, by, selector) -> WebElement:
         """
         Receives css selector
         returns web element object
@@ -64,7 +64,7 @@ class BasePage:
             element = self._driver.find_element(by=By.LINK_TEXT, value=selector)
         return element
 
-    def find_elements(self, by, selector):
+    def find_elements(self, by, selector) -> list[WebElement]:
         """
         Receives css selector for a list/container
         returns a list of web elements
@@ -83,7 +83,7 @@ class BasePage:
             elements = self._driver.find_elements(by=By.LINK_TEXT, value=selector)
         return elements
 
-    def explicit_wait_clickable(self, selector: str):
+    def explicit_wait_clickable(self, selector: str) -> None:
         """
         Receives css selector for an element
         wait until the element is clickable
@@ -91,13 +91,20 @@ class BasePage:
         wait = WebDriverWait(self._driver, 10)
         wait.until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, selector)))
 
-    def explicit_wait_visibility(self, web_element: WebElement):
+    def explicit_wait_visibility(self, web_element: WebElement) -> None:
         """
         Receives web element
         wait until the element is visible
         """
         wait = WebDriverWait(self._driver, 10)
         wait.until(expected_conditions.visibility_of(web_element))
+
+    def explicit_wait_title_contains(self, title: str) -> None:
+        """
+        Receives string title and waits until the title exist in the Dom
+        """
+        wait = WebDriverWait(self._driver, 10)
+        wait.until(expected_conditions.title_contains(title))
 
     @staticmethod
     def select_by_index(web_element: WebElement, index: int):
