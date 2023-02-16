@@ -1,6 +1,5 @@
 import os
 
-import allure
 import pytest
 from selenium.common import TimeoutException
 from page_objects.contact_page import ContactUsPage
@@ -8,6 +7,7 @@ from page_objects.home_page import HomePage
 from page_objects.nav_bar import NavBar
 from page_objects.results_page import ResultsPage
 from .conftest import Drivers, create_driver
+from utils.files import write
 
 
 class TestBase:
@@ -56,10 +56,16 @@ class TestBase:
         """
         return NavBar(driver)
 
+    @pytest.fixture
+    def result_path(self):
+        return os.getcwd() + r'\allure-results'
+
+    @pytest.fixture
+    def relative_result_path(self):
+        return os.path.abspath("..//") + r'\allure-results'
+
     @pytest.fixture(autouse=True)
-    def test_details(self, driver):
-        result_path = os.getcwd() + r'\allure-results'
-        relative = os.path.abspath("..//") + r'\allure-results'
+    def write_test_details(self, driver, result_path, relative_result_path):
         try:
             details = {
                 'name': driver.name.capitalize(),
@@ -69,10 +75,10 @@ class TestBase:
             info = f'Browser={details["name"]}\nVersion={details["version"]}\nPlatform={details["platform"]}'
 
             if not result_path:
-                with open(f'{relative}/environment.properties', 'w') as f:
-                    f.write(info)
+                write(f'{relative_result_path}/environment.properties', info)
+
             else:
-                with open(f'{result_path}/environment.properties', 'w') as f:
-                    f.write(info)
+                write(f'{result_path}/environment.properties', info)
         except (FileNotFoundError, AttributeError) as e:
             print(e)
+
