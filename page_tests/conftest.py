@@ -45,7 +45,7 @@ def create_capabilities(browser_type: Enum) -> dict:
      returns capabilities
     """
     try:
-        # define capabilities
+
         capabilities = {
             "browserName": "",
             "browserVersion": "",
@@ -53,13 +53,9 @@ def create_capabilities(browser_type: Enum) -> dict:
                 "enableVideo": True
             }
         }
-        # read from browsers json file
         browsers = read_from_json(browsers_json)
-        # get the browser string from browser type enum
         browser_type_val = browser_type.value.lower()
-        # access the default version from browsers.json
         version = browsers[browser_type_val]['default']
-        # change capabilities dictionary with new values
         capabilities["browserName"] = browser_type_val
         capabilities["browserVersion"] = version
         return capabilities
@@ -69,7 +65,7 @@ def create_capabilities(browser_type: Enum) -> dict:
 
 def create_driver(browser_type: Enum) -> webdriver:
     """
-    Receives brwoser type
+    Receives browser type
     creates webdriver object
     """
     try:
