@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from .base_test import TestBase
-from ui_test_urls import ui_constants as uic
+from urls import ui_constants as uic
 
 
 @allure.epic("Search")
