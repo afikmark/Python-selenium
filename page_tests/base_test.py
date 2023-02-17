@@ -77,7 +77,7 @@ class TestBase:
         return {
             'name': driver.name.capitalize(),
             'version': driver.capabilities['browserVersion'],
-            'platform': driver.capabilities['platformName']
+            'platform': driver.capabilities['platformName'].capitalize()
         }
 
     @pytest.fixture(autouse=True)
