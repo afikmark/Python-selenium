@@ -40,7 +40,6 @@ def create_capabilities(browser_type: Enum):
         }
         # read from browsers json file
         browsers = read_from_json(browsers_json)
-        print(paths.paths.profile)
         # get the browser string from browser type enum
         browser_type_val = browser_type.value.lower()
         # access the default version from browsers.json

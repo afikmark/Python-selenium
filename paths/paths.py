@@ -1,5 +1,6 @@
 import os
 
-profile = os.path.abspath('..//..//')
-browsers_json = os.path.join(profile, r'.aerokube\selenoid\browsers.json')
+local_profile = os.path.abspath('..//..//')
+jenkins = os.path.abspath('..//..//..//')
+browsers_json = os.path.join(jenkins, r'.aerokube\selenoid\browsers.json')
 
