@@ -3,8 +3,6 @@ from enum import Enum
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.common import WebDriverException
-
-import paths.paths
 from enums.drivers import Drivers
 from utils.files import read_from_json
 from urls.docker import DOCKER_URL
@@ -12,6 +10,11 @@ from paths.paths import browsers_json
 
 
 def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions:
+    """
+    Receives browser type
+    creates webdriver options object matching browser type enum input
+    returns options object
+    """
     match browser_type:
         case Drivers.CHROME:
 
@@ -25,10 +28,22 @@ def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions:
 
 
 def add_arguments(options: ChromeOptions | FirefoxOptions) -> None:
+    """
+    Receives Options object
+    adds arguments to options
+    """
     options.add_argument("start-maximized")
 
 
-def create_capabilities(browser_type: Enum):
+def create_capabilities(browser_type: Enum) -> dict:
+    """
+     Receives a browser type Enum
+     defines a capabilities dictionary to pass
+     reads from browser.json file located in selenoid folder
+     sets capabilities browser type and version via the input given
+     and browser.json file
+     returns capabilities
+    """
     try:
         # define capabilities
         capabilities = {
@@ -53,7 +68,10 @@ def create_capabilities(browser_type: Enum):
 
 
 def create_driver(browser_type: Enum) -> webdriver:
-    #
+    """
+    Receives brwoser type
+    creates webdriver object
+    """
     try:
         return webdriver.Remote(command_executor=DOCKER_URL,
                                 desired_capabilities=create_capabilities(browser_type),
