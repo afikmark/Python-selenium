@@ -3,6 +3,8 @@ from enum import Enum
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.common import WebDriverException
+
+import paths.paths
 from enums.drivers import Drivers
 from utils.files import read_from_json
 from urls.docker import DOCKER_URL
@@ -38,6 +40,7 @@ def create_capabilities(browser_type: Enum):
         }
         # read from browsers json file
         browsers = read_from_json(browsers_json)
+        print(paths.paths.profile)
         # get the browser string from browser type enum
         browser_type_val = browser_type.value.lower()
         # access the default version from browsers.json
