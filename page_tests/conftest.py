@@ -60,15 +60,22 @@ def create_capabilities(browser_type: Enum) -> dict:
         capabilities["browserVersion"] = version
         return capabilities
     except (FileNotFoundError, KeyError) as e:
-        print("Wrong browser or version", e.message)
+        print("Wrong browser or version", e)
 
 
-def create_driver(browser_type: Enum) -> webdriver:
+def create_driver(browser_type: Enum, local=False) -> webdriver:
     """
     Receives browser type
     creates webdriver object
     """
     try:
+        if local:
+            match browser_type:
+                case Drivers.CHROME:
+                    return webdriver.Chrome(options=create_options(browser_type))
+                case Drivers.FIREFOX:
+                    return webdriver.Firefox(options=create_options(browser_type))
+
         return webdriver.Remote(command_executor=DOCKER_URL,
                                 desired_capabilities=create_capabilities(browser_type),
                                 options=create_options(browser_type))
