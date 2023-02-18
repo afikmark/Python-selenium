@@ -20,7 +20,7 @@ class TestBase:
         returns the driver as a fixture for all tests to use
         """
         try:
-            driver = create_driver(Drivers.CHROME, local=True)
+            driver = create_driver(Drivers.CHROME)
             if driver.name == Drivers.FIREFOX.value.lower():
                 driver.maximize_window()
             return driver

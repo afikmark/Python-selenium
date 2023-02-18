@@ -26,6 +26,11 @@ def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions:
             firefox_options = webdriver.FirefoxOptions()
             return firefox_options
 
+        case Drivers.EDGE:
+            edge_options = webdriver.EdgeOptions()
+            add_arguments(edge_options)
+            return edge_options
+
 
 def add_arguments(options: ChromeOptions | FirefoxOptions) -> None:
     """
@@ -59,8 +64,12 @@ def create_capabilities(browser_type: Enum) -> dict:
         capabilities["browserName"] = browser_type_val
         capabilities["browserVersion"] = version
         return capabilities
-    except (FileNotFoundError, KeyError) as e:
-        print("Wrong browser or version", e)
+    except KeyError as e:
+        print("Wrong browser or version. Selenoid doesn't support Edge browser, please run locally ", e)
+    except FileNotFoundError as e:
+        print("Wrong profile path:\n"
+              "if running from jenkins: in paths.py change to jenkins profile\n"
+              "if running from local machine: change to local_profile\n", e)
 
 
 def create_driver(browser_type: Enum, local=False) -> webdriver:
@@ -75,6 +84,8 @@ def create_driver(browser_type: Enum, local=False) -> webdriver:
                     return webdriver.Chrome(options=create_options(browser_type))
                 case Drivers.FIREFOX:
                     return webdriver.Firefox(options=create_options(browser_type))
+                case Drivers.EDGE:
+                    return webdriver.Edge(options=create_options(browser_type))
 
         return webdriver.Remote(command_executor=DOCKER_URL,
                                 desired_capabilities=create_capabilities(browser_type),
