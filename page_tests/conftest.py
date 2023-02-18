@@ -2,6 +2,7 @@ from selenium import webdriver
 from enum import Enum
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.common import WebDriverException
 from enums.drivers import Drivers
 from utils.files import read_from_json
@@ -9,7 +10,7 @@ from urls.docker import DOCKER_URL
 from paths.paths import browsers_json
 
 
-def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions:
+def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions | EdgeOptions:
     """
     Receives browser type
     creates webdriver options object matching browser type enum input
@@ -32,7 +33,7 @@ def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions:
             return edge_options
 
 
-def add_arguments(options: ChromeOptions | FirefoxOptions) -> None:
+def add_arguments(options: ChromeOptions | FirefoxOptions | EdgeOptions) -> None:
     """
     Receives Options object
     adds arguments to options
