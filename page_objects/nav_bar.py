@@ -4,7 +4,6 @@ from selenium.common.exceptions import NoSuchElementException
 
 from enums.locators import Locators
 from .base_page import BasePage
-from functools import cached_property
 from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -18,6 +17,8 @@ class NavBarElements:
     accessories: str = '//*[@id="ast-desktop-header"]//*[@class="menu-link"][contains(text(),"Accessories")]'
     about: str = '//*[@id="ast-desktop-header"]//*[@class="menu-link"][contains(text(),"About")]'
     contact_us: str = '//*[@id="ast-desktop-header"]//*[@class="menu-link"][contains(text(),"Contact Us")]'
+    shopping_cart: str = '.ast-header-woo-cart #ast-site-header-cart'
+    shopping_cart_total: str = '.ast-header-woo-cart .ast-woo-header-cart-info-wrap .woocommerce-Price-amount.amount'
 
 
 class NavBar(BasePage):
@@ -34,6 +35,8 @@ class NavBar(BasePage):
             'accessories': self.find_element(by=Locators.XPATH, selector=NavBarElements.accessories),
             'about': self.find_element(by=Locators.XPATH, selector=NavBarElements.about),
             'contact us': self.find_element(by=Locators.XPATH, selector=NavBarElements.contact_us),
+            'shopping cart': self.find_element(by=Locators.CSS, selector=NavBarElements.shopping_cart),
+            'cart total': self.find_element(by=Locators.CSS, selector=NavBarElements.shopping_cart_total)
         }
 
     def get_element(self, category: str) -> WebElement:
@@ -47,3 +50,9 @@ class NavBar(BasePage):
             self.click(self.get_element(category))
         except (KeyError, NoSuchElementException) as e:
             print(e)
+
+    def get_cart_total(self) -> str:
+        """
+        Returns shopping cart current total amount
+        """
+        return self.get_element('cart total').text

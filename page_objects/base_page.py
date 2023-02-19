@@ -8,6 +8,8 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+
+from decorators.decorators import retry
 from enums.locators import Locators
 from enum import Enum
 
@@ -21,6 +23,12 @@ class BasePage:
         """
         self._driver = driver
         self._wait = WebDriverWait(self._driver, 10)
+
+    @retry
+    def go(self, url: str):
+        self._driver.get(url)
+        is_success = self._driver.current_url == url
+        return is_success
 
     def get_driver(self) -> webdriver:
         return self._driver
@@ -109,7 +117,7 @@ class BasePage:
         wait.until(expected_conditions.title_contains(title))
 
     @staticmethod
-    def select_by_index(web_element: WebElement, index: int):
+    def select(web_element: WebElement, index: int):
         """
         Receives a web element of selector type and index number
         select an item in the selector element using the index given
@@ -117,11 +125,25 @@ class BasePage:
         selector = Select(web_element)
         selector.select_by_index(index)
 
+    @staticmethod
+    def select(web_element: WebElement, value: str | Enum):
+        """
+        Receives a web element of selector type and index number
+        select an item in the selector element using the index given
+        """
+        selector = Select(web_element)
+        selector.select_by_visible_text(value)
+
     def action(self, key_type: str):
         """Performs an action on the keyboard"""
         action = ActionChains(self._driver)
         if key_type == 'enter':
             action.send_keys(Keys.ENTER).perform()
 
-    def current_address(self):
-        return self._driver.current_url
+    @retry
+    def back(self):
+        current_url = self._driver.current_url
+        self._driver.back()
+        new_url = self._driver.current_url
+        success = False if new_url == current_url else True
+        return success

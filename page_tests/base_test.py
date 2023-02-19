@@ -2,10 +2,14 @@ import os
 
 import pytest
 from selenium.common import TimeoutException
+from page_objects.base_page import BasePage
 from page_objects.contact_page import ContactUsPage
 from page_objects.home_page import HomePage
 from page_objects.nav_bar import NavBar
 from page_objects.results_page import ResultsPage
+from page_objects.shopping_cart import ShoppingCart
+from page_objects.store_page import StorePage
+from page_objects.products_page import ProductsPage
 from .conftest import Drivers, create_driver
 from utils.files import write
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -20,7 +24,7 @@ class TestBase:
         returns the driver as a fixture for all tests to use
         """
         try:
-            driver = create_driver(Drivers.CHROME)
+            driver = create_driver(Drivers.CHROME, local=True)
             if driver.name == Drivers.FIREFOX.value.lower():
                 driver.maximize_window()
             return driver
@@ -32,6 +36,13 @@ class TestBase:
         assert True
         yield
         driver.quit()
+
+    @pytest.fixture
+    def base_page(self, driver: WebDriver) -> BasePage:
+        """
+        :returns: base page
+        """
+        return BasePage(driver)
 
     @pytest.fixture
     def home_page(self, driver: WebDriver) -> HomePage:
@@ -60,6 +71,27 @@ class TestBase:
         :returns NavBar Page
         """
         return NavBar(driver)
+
+    @pytest.fixture
+    def store_page(self, driver: WebDriver) -> StorePage:
+        """
+        :returns: Store Page
+        """
+        return StorePage(driver)
+
+    @pytest.fixture
+    def products_page(self, driver: WebDriver) -> ProductsPage:
+        """
+        :returns: Products Page
+        """
+        return ProductsPage(driver)
+
+    @pytest.fixture
+    def shopping_cart(self, driver: WebDriver) -> ShoppingCart:
+        """
+        :returns: Shopping cart Page
+        """
+        return ShoppingCart(driver)
 
     @pytest.fixture
     def result_path(self) -> str:
