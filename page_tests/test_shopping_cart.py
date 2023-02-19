@@ -9,7 +9,7 @@ from urls import ui_constants as uic
 @allure.severity(allure.severity_level.CRITICAL)
 class TestShoppingCart(TestBase):
 
-    @allure.title("test search")
+    @allure.title("Shopping cart test")
     @allure.description("Test adding items to the shopping cart")
     @allure.step("Navigate to Home page, Navigate to Men category,"
                  "Sort price from high to low,"
