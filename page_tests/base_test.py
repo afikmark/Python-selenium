@@ -1,4 +1,6 @@
 import os
+
+import allure
 import pytest
 from selenium.common import TimeoutException
 from page_objects.base_page import BasePage
@@ -32,6 +34,19 @@ class TestBase:
             return driver
         except TimeoutException:
             logger.exception("The request has timed out")
+
+    @pytest.fixture(autouse=True)
+    def screenshot_on_failure(self, request, driver):
+        """
+        Check if test result is 'failed'
+        capture screenshot and attach it to the test report in allure.
+        """
+
+        def finalizer():
+            if request.node.rep_call.failed:
+                allure.attach(driver.get_screenshot_as_png(), name='Screenshot', attachment_type=allure.attachment_type.PNG, body="Screenshot of the failed test")
+
+        request.addfinalizer(finalizer)
 
     @pytest.fixture(autouse=True)
     @default_logging
