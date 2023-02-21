@@ -29,7 +29,8 @@ enter
 add ```-n [number of threads]```
 i.e. ``` pytest --alluredir=[project directory]\allure-results -n 4 ```
 
-<img width="1438" alt="allure-report" src="https://user-images.githubusercontent.com/78296112/219883423-6f82f40c-ce8b-442e-90cd-95fe9fcf9e39.png">
+<img width="1920" alt="allure-report" src="https://user-images.githubusercontent.com/78296112/220448531-4586d13f-09dc-4a90-a1e2-9aee1bc6db3a.png">
+
 
 ### Screenshot when a test fails:
 
