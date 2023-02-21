@@ -7,10 +7,10 @@ from selenium.webdriver.remote.webelement import WebElement
 
 @dataclass(frozen=True)
 class ContactUsElements:
-    name: str = '#wpforms-15-field_0'
-    email: str = '#wpforms-15-field_4'
-    subject: str = '#wpforms-15-field_5'
-    message: str = '#wpforms-15-field_2'
+    name: str = 'input#wpforms-15-field_0'
+    email: str = 'input#wpforms-15-field_4'
+    subject: str = 'input#wpforms-15-field_5'
+    message: str = 'textarea#wpforms-15-field_2'
     continue_btn: str = 'button#wpforms-submit-15[type=submit]'
     submission_message: str = '[data-id="063df41"].elementor-element >div p'
 
@@ -35,10 +35,10 @@ class ContactUsPage(BasePage):
             'contact_submission_paragraph': self.find_element(by=Locators.CSS, selector=ContactUsElements.submission_message)
         }
 
-    def get_element(self, element: str) -> WebElement | list[WebElement]:
-        if element in self.contact_us_form:
+    def get_element(self, element: str, after_submission: bool = False) -> WebElement | list[WebElement]:
+        if not after_submission:
             return self.contact_us_form[element]
-        elif element in self.contact_us_after_submission:
+        elif after_submission:
             return self.contact_us_after_submission[element]
 
     def click_continue(self):
@@ -53,4 +53,4 @@ class ContactUsPage(BasePage):
         self.fill_text(self.get_element('message'), user_info['message'])
 
         self.click_continue()
-        return self.get_element('contact_submission_paragraph').text
+        return self.get_element('contact_submission_paragraph', after_submission=True).text

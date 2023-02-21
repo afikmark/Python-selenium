@@ -126,12 +126,8 @@ class TestBase:
         try:
             info = f'\nBrowser={test_details["name"]}\nVersion={test_details["version"]}\nPlatform={test_details["platform"]}'
 
-            if not result_path:
-                write(f'{relative_result_path}/environment.properties', info)
-                logger.info(f"writing current driver details")
+            write(f'{result_path or relative_result_path}/environment.properties', info)
+            logger.info(f"writing current driver details")
 
-            else:
-                write(f'{result_path}/environment.properties', info)
-                logger.info(f"writing current driver details")
         except (FileNotFoundError, AttributeError) as e:
             logger.exception(e)
