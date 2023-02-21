@@ -11,7 +11,7 @@ class ContactUsPage(BasePage):
         super().__init__(driver)
 
     @property
-    def contact_us_form(self):
+    def contact_us_form(self) -> dict:
         return {
             'name': self.find_element(by=Locators.CSS, selector='input#wpforms-15-field_0'),
             'email': self.find_element(by=Locators.CSS, selector='input#wpforms-15-field_4'),
@@ -21,7 +21,7 @@ class ContactUsPage(BasePage):
         }
 
     @property
-    def contact_us_after_submission(self):
+    def contact_us_after_submission(self) -> dict:
         return {
             'contact_submission_paragraph': self.find_element(by=Locators.CSS, selector='[data-id="063df41"].elementor-element >div p')
         }

@@ -9,7 +9,7 @@ class ProductsPage(BasePage):
         super(ProductsPage, self).__init__(driver)
 
     @property
-    def products_page(self):
+    def products_page(self) -> dict:
         return {
             'add to cart': self.find_element(by=Locators.CSS, selector='[type=submit][name=add-to-cart]'),
             'product name': self.find_element(by=Locators.CSS, selector='.entry-summary >h1')
@@ -17,7 +17,7 @@ class ProductsPage(BasePage):
         }
 
     @property
-    def products_page_post_purchase(self):
+    def products_page_post_purchase(self) -> dict:
         return {
             'message': self.find_element(by=Locators.CSS, selector='.woocommerce-notices-wrapper .woocommerce-message')
         }

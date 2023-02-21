@@ -9,7 +9,7 @@ class ShoppingCart(BasePage):
         super(ShoppingCart, self).__init__(driver)
 
     @property
-    def shopping_cart(self):
+    def shopping_cart(self) -> dict:
         return {
             'product names': self.find_elements(by=Locators.CSS, selector='.product-name a')
         }
