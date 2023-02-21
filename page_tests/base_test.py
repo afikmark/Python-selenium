@@ -128,10 +128,10 @@ class TestBase:
 
             if not result_path:
                 write(f'{relative_result_path}/environment.properties', info)
-                logger.info(f"writing current driver details: {info}")
+                logger.info(f"writing current driver details")
 
             else:
                 write(f'{result_path}/environment.properties', info)
-                logger.info(f"writing current driver details: {info}")
+                logger.info(f"writing current driver details")
         except (FileNotFoundError, AttributeError) as e:
             logger.exception(e)
