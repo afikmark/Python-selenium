@@ -3,7 +3,7 @@ from page_tests.base_test import TestBase
 from urls import ui_constants as uic
 import allure
 from decorators.decorators import default_logging
-from enums.nav_bar_categories import Categories
+from enums.page_elements import NavBarElements
 
 
 @allure.epic("Contact Us")
@@ -30,7 +30,7 @@ class TestContactUs(TestBase):
     @allure.title("Test the contact Us form")
     def test_contact(self, driver, info, contact_page, nav_bar, expected_message):
         driver.get(uic.HOME_PAGE)
-        nav_bar.navigate(Categories.CONTACT_US)
+        nav_bar.navigate(NavBarElements.CONTACT_US)
         assert driver.current_url == uic.CONTACT_US
         submission_text = contact_page.contact(
             name=info['name'],

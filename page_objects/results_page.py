@@ -2,13 +2,9 @@ from selenium.common import NoSuchElementException
 from utils.logger import logger
 from enums.locators import Locators
 from page_objects.base_page import BasePage
-from dataclasses import dataclass
+
 from selenium.webdriver.remote.webelement import WebElement
-
-
-@dataclass(frozen=True)
-class ResultPageElements:
-    result_links: str = 'article .entry-title a'
+from enums.page_elements import ResultPageElements
 
 
 class ResultsPage(BasePage):
@@ -19,7 +15,7 @@ class ResultsPage(BasePage):
     @property
     def elements(self) -> dict:
         return {
-            'result_links': self.find_elements(by=Locators.CSS, selector=ResultPageElements.result_links)
+            'result_links': self.find_elements(by=Locators.CSS, selector='article .entry-title a')
         }
 
     def get_element(self, element: str) -> list[WebElement]:
@@ -32,7 +28,7 @@ class ResultsPage(BasePage):
          the text of each title
         """
         try:
-            results_container = self.get_element('result_links')
+            results_container = self.get_element(ResultPageElements.RESULT_LINKS.value)
             for result in results_container:
                 yield result.text
         except NoSuchElementException as e:

@@ -3,14 +3,8 @@ from selenium.common import NoSuchElementException, TimeoutException, ElementNot
 from utils.logger import logger
 from enums.locators import Locators
 from page_objects.base_page import BasePage
-from dataclasses import dataclass
+from enums.page_elements import HomePageElements
 from selenium.webdriver.remote.webelement import WebElement
-
-
-@dataclass(frozen=True)
-class HomePageElements:
-    search_btn: str = '.ast-header-search[data-section]'
-    search_bar: str = '.search-field[type=search]'
 
 
 class HomePage(BasePage):
@@ -21,8 +15,8 @@ class HomePage(BasePage):
     @property
     def elements(self) -> dict:
         return {
-            'search_button': self.find_element(by=Locators.CSS, selector=HomePageElements.search_btn),
-            'search_bar': self.find_element(by=Locators.CSS, selector=HomePageElements.search_bar),
+            'search_button': self.find_element(by=Locators.CSS, selector='.ast-header-search[data-section]'),
+            'search_bar': self.find_element(by=Locators.CSS, selector='.search-field[type=search]'),
         }
 
     def get_element(self, element: str) -> WebElement:
@@ -35,8 +29,8 @@ class HomePage(BasePage):
         searches by given input
         """
         try:
-            self.click(self.get_element('search_button'))
-            self.fill_text(self.get_element('search_bar'), search_params)
+            self.click(self.get_element(HomePageElements.SEARCH_BUTTON.value))
+            self.fill_text(self.get_element(HomePageElements.SEARCH_BAR.value), search_params)
             self.action('enter')
             self.explicit_wait_title_contains("Results")
         except (NoSuchElementException, TimeoutException, ElementNotInteractableException) as e:

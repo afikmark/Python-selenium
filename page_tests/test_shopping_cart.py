@@ -1,9 +1,9 @@
 import allure
 from enums.sort import SortProducts
-from enums.nav_bar_categories import Categories
 from .base_test import TestBase
 from urls import ui_constants as uic
 from decorators.decorators import default_logging
+from enums.page_elements import NavBarElements
 
 
 @allure.epic("Shopping cart")
@@ -26,8 +26,8 @@ class TestShoppingCart(TestBase):
         4. Add the first four items to the shopping cart
         """
         base_page.go(uic.HOME_PAGE)
-        nav_bar.navigate(Categories.MEN)
-        store_page.sort_products(SortProducts.HIGH)
+        nav_bar.navigate(NavBarElements.MEN)
+        store_page.sort_products(SortProducts.HIGH.value)
         products = []
         for i in range(0, 4):
             # click on product
@@ -38,7 +38,7 @@ class TestShoppingCart(TestBase):
             # go back to products list
             base_page.navigate_back()
 
-        nav_bar.navigate(Categories.SHOPPING_CART)
+        nav_bar.navigate(NavBarElements.SHOPPING_CART)
         shopping_cart_products = list(shopping_cart.get_product_names())
         compare_list = [product for product in shopping_cart_products if product in products]
         assert compare_list, f"expected {products} got {shopping_cart_products}"
