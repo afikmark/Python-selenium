@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-
+from utils.logger import logger
 from decorators.decorators import retry
 from enums.locators import Locators
 from enum import Enum
@@ -73,7 +73,7 @@ class BasePage:
                 case _:
                     raise ValueError("Wrong locator type!")
         except NoSuchElementException as e:
-            print(e)
+            logger.exception(e)
 
     def find_elements(self, by: Enum, selector: str) -> list[WebElement]:
         """
@@ -91,7 +91,7 @@ class BasePage:
                 case _:
                     raise ValueError("Wrong locator type!")
         except NoSuchElementException as e:
-            print(e)
+            logger.exception(e)
 
     def explicit_wait_clickable(self, selector: str) -> None:
         """
@@ -141,7 +141,7 @@ class BasePage:
             action.send_keys(Keys.ENTER).perform()
 
     @retry
-    def back(self):
+    def navigate_back(self):
         current_url = self._driver.current_url
         self._driver.back()
         new_url = self._driver.current_url

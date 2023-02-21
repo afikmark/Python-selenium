@@ -1,6 +1,5 @@
 from selenium.common import NoSuchElementException
-from functools import cached_property
-
+from utils.logger import logger
 from enums.locators import Locators
 from page_objects.base_page import BasePage
 from dataclasses import dataclass
@@ -36,5 +35,5 @@ class ResultsPage(BasePage):
             results_container = self.get_element('result_links')
             for result in results_container:
                 yield result.text
-        except NoSuchElementException:
-            print("No such element")
+        except NoSuchElementException as e:
+            logger.exception(e)

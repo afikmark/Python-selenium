@@ -1,5 +1,4 @@
 import os
-
 import pytest
 from selenium.common import TimeoutException
 from page_objects.base_page import BasePage
@@ -13,11 +12,14 @@ from page_objects.products_page import ProductsPage
 from .conftest import Drivers, create_driver
 from utils.files import write
 from selenium.webdriver.remote.webdriver import WebDriver
+from decorators.decorators import default_logging
+from utils.logger import logger
 
 
 class TestBase:
 
     @pytest.fixture(scope="session")
+    @default_logging
     def driver(self) -> WebDriver:
         """
         Creates Webdriver according to webdriver type
@@ -29,12 +31,15 @@ class TestBase:
                 driver.maximize_window()
             return driver
         except TimeoutException:
-            print("The request has timed out")
+            logger.exception("The request has timed out")
 
     @pytest.fixture(autouse=True)
+    @default_logging
     def setup_teardown(self, driver: WebDriver):
         assert True
+        logger.info("test started")
         yield
+        logger.info("testing ended quitting driver")
         driver.quit()
 
     @pytest.fixture
@@ -113,17 +118,20 @@ class TestBase:
         }
 
     @pytest.fixture(autouse=True)
+    @default_logging
     def write_test_details(self, test_details: dict, result_path: str, relative_result_path: str) -> None:
         """
         Get current driver information and writes it to environment properties file in the allure-results path
         """
         try:
-            info = f'Browser={test_details["name"]}\nVersion={test_details["version"]}\nPlatform={test_details["platform"]}'
+            info = f'\nBrowser={test_details["name"]}\nVersion={test_details["version"]}\nPlatform={test_details["platform"]}'
 
             if not result_path:
                 write(f'{relative_result_path}/environment.properties', info)
+                logger.info(f"writing current driver details: {info}")
 
             else:
                 write(f'{result_path}/environment.properties', info)
+                logger.info(f"writing current driver details: {info}")
         except (FileNotFoundError, AttributeError) as e:
-            print(e)
+            logger.exception(e)

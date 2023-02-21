@@ -1,7 +1,9 @@
 import allure
 from enums.sort import SortProducts
+from enums.nav_bar_categories import Categories
 from .base_test import TestBase
 from urls import ui_constants as uic
+from decorators.decorators import default_logging
 
 
 @allure.epic("Shopping cart")
@@ -9,6 +11,7 @@ from urls import ui_constants as uic
 @allure.severity(allure.severity_level.CRITICAL)
 class TestShoppingCart(TestBase):
 
+    @default_logging
     @allure.title("Shopping cart test")
     @allure.description("Test adding items to the shopping cart")
     @allure.step("Navigate to Home page, Navigate to Men category,"
@@ -23,7 +26,7 @@ class TestShoppingCart(TestBase):
         4. Add the first four items to the shopping cart
         """
         base_page.go(uic.HOME_PAGE)
-        nav_bar.navigate('Men')
+        nav_bar.navigate(Categories.MEN)
         store_page.sort_products(SortProducts.HIGH)
         products = []
         for i in range(0, 4):
@@ -33,9 +36,9 @@ class TestShoppingCart(TestBase):
             products_page.add_to_cart()
             products.append(products_page.get_product_name())
             # go back to products list
-            base_page.back()
+            base_page.navigate_back()
 
-        nav_bar.navigate('shopping cart')
+        nav_bar.navigate(Categories.SHOPPING_CART)
         shopping_cart_products = list(shopping_cart.get_product_names())
         compare_list = [product for product in shopping_cart_products if product in products]
         assert compare_list, f"expected {products} got {shopping_cart_products}"

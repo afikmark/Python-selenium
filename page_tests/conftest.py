@@ -6,6 +6,7 @@ from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.common import WebDriverException
 from enums.drivers import Drivers
 from utils.files import read_from_json
+from utils.logger import logger
 from urls.docker import DOCKER_URL
 from paths.paths import browsers_json
 
@@ -39,6 +40,7 @@ def add_arguments(options: ChromeOptions | FirefoxOptions | EdgeOptions) -> None
     adds arguments to options
     """
     options.add_argument("start-maximized")
+    logger.info("Adding argument")
 
 
 def create_capabilities(browser_type: Enum) -> dict:
@@ -66,11 +68,11 @@ def create_capabilities(browser_type: Enum) -> dict:
         capabilities["browserVersion"] = version
         return capabilities
     except KeyError as e:
-        print("Wrong browser or version. Selenoid doesn't support Edge browser, please run locally ", e)
+        logger.exception(f"{e}: Wrong browser or version. Selenoid doesn't support Edge browser, please run locally")
     except FileNotFoundError as e:
-        print("Wrong profile path:\n"
-              "if running from jenkins: in paths.py change to jenkins profile\n"
-              "if running from local machine: change to local_profile\n", e)
+        logger.exception(f"{e}: Wrong profile path:\n"
+                         "if running from jenkins: in paths.py change to jenkins profile\n"
+                         "if running from local machine: change to local_profile\n")
 
 
 def create_driver(browser_type: Enum, local=False) -> webdriver:
@@ -82,14 +84,19 @@ def create_driver(browser_type: Enum, local=False) -> webdriver:
         if local:
             match browser_type:
                 case Drivers.CHROME:
+                    logger.info("Creating local Chrome Driver")
                     return webdriver.Chrome(options=create_options(browser_type))
+
                 case Drivers.FIREFOX:
+                    logger.info("Creating local Firefox Driver")
                     return webdriver.Firefox(options=create_options(browser_type))
                 case Drivers.EDGE:
+                    logger.info("Creating local Edge Driver")
                     return webdriver.Edge(options=create_options(browser_type))
 
+        logger.info(f"Creating remote {browser_type.value} driver ")
         return webdriver.Remote(command_executor=DOCKER_URL,
                                 desired_capabilities=create_capabilities(browser_type),
                                 options=create_options(browser_type))
-    except WebDriverException as e:
-        print(e)
+    except WebDriverException:
+        logger.exception(WebDriverException)

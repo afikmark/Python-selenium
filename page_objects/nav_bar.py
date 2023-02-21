@@ -1,8 +1,9 @@
 import allure
 import pytest
 from selenium.common.exceptions import NoSuchElementException
-
+from enum import Enum
 from enums.locators import Locators
+from utils.logger import logger
 from .base_page import BasePage
 from dataclasses import dataclass
 from selenium.webdriver.remote.webelement import WebElement
@@ -39,17 +40,17 @@ class NavBar(BasePage):
             'cart total': self.find_element(by=Locators.CSS, selector=NavBarElements.shopping_cart_total)
         }
 
-    def get_element(self, category: str) -> WebElement:
+    def get_element(self, category: Enum | str) -> WebElement:
         return self.navbar[f"{category.lower()}"]
 
     @allure.step("Navigate to category: {0}")
-    def navigate(self, category: str):
+    def navigate(self, category: Enum):
         if not category:
             pytest.exit("please use a valid selector")
         try:
-            self.click(self.get_element(category))
-        except (KeyError, NoSuchElementException) as e:
-            print(e)
+            self.click(self.get_element(category.value))
+        except (KeyError, NoSuchElementException, AttributeError) as e:
+            logger.exception(e)
 
     def get_cart_total(self) -> str:
         """

@@ -1,7 +1,4 @@
-from functools import cached_property
-
 import allure
-
 from page_objects.base_page import BasePage
 from enums.locators import Locators
 from dataclasses import dataclass

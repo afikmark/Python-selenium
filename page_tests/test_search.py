@@ -1,19 +1,19 @@
 import allure
 import pytest
-
 from .base_test import TestBase
 from urls import ui_constants as uic
+from decorators.decorators import default_logging
 
 
 @allure.epic("Search")
 @allure.story("Search feature functionality test")
 @allure.severity(allure.severity_level.CRITICAL)
 class TestSearch(TestBase):
-
     @pytest.fixture
     def shoes(self) -> list[str]:
         return ['ATID Black Shoes', 'ATID Yellow Shoes', 'ATID Red Shoes', 'ATID Blue Shoes', 'ATID Green Shoes']
 
+    @default_logging
     @allure.description("Search for an item in the store")
     @allure.title("test search")
     @allure.step("Navigate to atid store, search for shoes, compare results to expected result")

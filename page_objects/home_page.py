@@ -1,7 +1,6 @@
 import allure
 from selenium.common import NoSuchElementException, TimeoutException, ElementNotInteractableException
-
-
+from utils.logger import logger
 from enums.locators import Locators
 from page_objects.base_page import BasePage
 from dataclasses import dataclass
@@ -41,7 +40,7 @@ class HomePage(BasePage):
             self.action('enter')
             self.explicit_wait_title_contains("Results")
         except (NoSuchElementException, TimeoutException, ElementNotInteractableException) as e:
-            print(e)
+            logger.exception(e)
 
     def nav_contact_us(self):
         self.click(self.elements['contact_us_button'])
