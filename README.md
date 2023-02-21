@@ -30,3 +30,8 @@ add ```-n [number of threads]```
 i.e. ``` pytest --alluredir=[project directory]\allure-results -n 4 ```
 
 <img width="1438" alt="allure-report" src="https://user-images.githubusercontent.com/78296112/219883423-6f82f40c-ce8b-442e-90cd-95fe9fcf9e39.png">
+
+### Screenshot when a test fails:
+
+<img width="1907" alt="test failed screenshot allure" src="https://user-images.githubusercontent.com/78296112/220425275-e50be92c-4f11-4ac6-a9fe-dc418b443d18.png">
+
