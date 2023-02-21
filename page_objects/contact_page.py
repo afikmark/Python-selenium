@@ -36,12 +36,15 @@ class ContactUsPage(BasePage):
         continue_btn = self.get_element(ContactUsElements.CONTINUE_BTN.value)
         self.click(continue_btn)
 
-    @allure.step("fills form using user information:{0}")
     def contact(self, **user_info):
-        self.fill_text(self.get_element(ContactUsElements.NAME.value), user_info['name'])
-        self.fill_text(self.get_element(ContactUsElements.SUBJECT.value), user_info['subject'])
-        self.fill_text(self.get_element(ContactUsElements.EMAIL.value), user_info['email'])
-        self.fill_text(self.get_element(ContactUsElements.MESSAGE.value), user_info['message'])
-
-        self.click_continue()
+        with allure.step(f"fill name using: '{user_info['name']}'"):
+            self.fill_text(self.get_element(ContactUsElements.NAME.value), user_info['name'])
+        with allure.step(f"fill subject using: '{user_info['subject']}'"):
+            self.fill_text(self.get_element(ContactUsElements.SUBJECT.value), user_info['subject'])
+        with allure.step(f"fill email using: '{user_info['email']}'"):
+            self.fill_text(self.get_element(ContactUsElements.EMAIL.value), user_info['email'])
+        with allure.step(f"fill message using: '{user_info['message']}'"):
+            self.fill_text(self.get_element(ContactUsElements.MESSAGE.value), user_info['message'])
+        with allure.step("Click Send Message button"):
+            self.click_continue()
         return self.get_element(ContactUsElements.CONTACT_SUBMISSION_PARAGRAPH.value, after_submission=True).text

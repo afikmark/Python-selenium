@@ -29,13 +29,17 @@ class TestContactUs(TestBase):
     @allure.description("Send a message using the Contact Us Form")
     @allure.title("Test the contact Us form")
     def test_contact(self, driver, info, contact_page, nav_bar, expected_message):
-        driver.get(uic.HOME_PAGE)
-        nav_bar.navigate(NavBarElements.CONTACT_US)
+        with allure.step(f"Navigate to Home Page: {uic.HOME_PAGE}"):
+            driver.get(uic.HOME_PAGE)
+        with allure.step(f"Navigate to {NavBarElements.CONTACT_US.value} category"):
+            nav_bar.navigate(NavBarElements.CONTACT_US)
         assert driver.current_url == uic.CONTACT_US
-        submission_text = contact_page.contact(
-            name=info['name'],
-            email=info['email'],
-            subject=info['subject'],
-            message=info['message'])
-        expected = expected_message
-        assert submission_text == expected, f"expected {expected_message} got {submission_text}"
+        with allure.step(f"Fill the contact us form"):
+            submission_text = contact_page.contact(
+                name=info['name'],
+                email=info['email'],
+                subject=info['subject'],
+                message=info['message'])
+        with allure.step("Compare the expected submission message with the actual one"):
+            expected = expected_message
+            assert submission_text == expected, f"expected {expected_message} got {submission_text}"

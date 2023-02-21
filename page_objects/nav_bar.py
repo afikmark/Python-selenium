@@ -29,7 +29,6 @@ class NavBar(BasePage):
     def get_element(self, category: str) -> WebElement:
         return self.navbar[f"{category}"]
 
-    @allure.step("Navigate to category: {0}")
     def navigate(self, category: str):
         if not category:
             pytest.exit("please use a valid selector")

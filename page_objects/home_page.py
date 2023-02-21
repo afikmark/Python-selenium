@@ -11,6 +11,7 @@ class HomePage(BasePage):
 
     def __init__(self, driver):
         super().__init__(driver)
+        self.id = 'Home Page'
 
     @property
     def elements(self) -> dict:
@@ -22,7 +23,6 @@ class HomePage(BasePage):
     def get_element(self, element: str) -> WebElement:
         return self.elements[element]
 
-    @allure.step("Click on the search button fill: {1}  submit the search")
     def search(self, search_params: str):
         """
         :param search_params: str
