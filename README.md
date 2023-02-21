@@ -27,6 +27,6 @@ enter
 ```pytest allure serve .\allure-results ``` in the terminal
 ### parallel run:
 add ```-n [number of threads]```
-i.e. ``` pytest pytest --alluredir=[project directory]\allure-results -n 4 ```
+i.e. ``` pytest --alluredir=[project directory]\allure-results -n 4 ```
 
 <img width="1438" alt="allure-report" src="https://user-images.githubusercontent.com/78296112/219883423-6f82f40c-ce8b-442e-90cd-95fe9fcf9e39.png">
