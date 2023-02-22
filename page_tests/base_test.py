@@ -11,6 +11,7 @@ from page_objects.results_page import ResultsPage
 from page_objects.shopping_cart import ShoppingCart
 from page_objects.store_page import StorePage
 from page_objects.products_page import ProductsPage
+from page_objects.checkout_page import CheckOutPage
 from .conftest import Drivers, create_driver
 from utils.files import write
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -112,6 +113,13 @@ class TestBase:
         :returns: Shopping cart Page
         """
         return ShoppingCart(driver)
+
+    @pytest.fixture
+    def checkout_page(self, driver: WebDriver) -> CheckOutPage:
+        """
+        :returns: Checkout Page
+        """
+        return CheckOutPage(driver)
 
     @pytest.fixture
     def result_path(self) -> str:

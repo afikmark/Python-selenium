@@ -1,7 +1,7 @@
 import allure
 from page_objects.base_page import BasePage
 from enums.locators import Locators
-
+from utils.forms import ContactUsForm
 from enums.page_elements import ContactUsElements
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -37,14 +37,12 @@ class ContactUsPage(BasePage):
         self.click(continue_btn)
 
     def contact(self, **user_info):
-        with allure.step(f"fill name using: '{user_info['name']}'"):
-            self.fill_text(self.get_element(ContactUsElements.NAME.value), user_info['name'])
-        with allure.step(f"fill subject using: '{user_info['subject']}'"):
-            self.fill_text(self.get_element(ContactUsElements.SUBJECT.value), user_info['subject'])
-        with allure.step(f"fill email using: '{user_info['email']}'"):
-            self.fill_text(self.get_element(ContactUsElements.EMAIL.value), user_info['email'])
-        with allure.step(f"fill message using: '{user_info['message']}'"):
-            self.fill_text(self.get_element(ContactUsElements.MESSAGE.value), user_info['message'])
+        contact_us_form = ContactUsForm()
+        fields = {'name': self.get_element(ContactUsElements.NAME.value),
+                  'subject': self.get_element(ContactUsElements.SUBJECT.value),
+                  'email': self.get_element(ContactUsElements.EMAIL.value),
+                  'message': self.get_element(ContactUsElements.MESSAGE.value)}
+        contact_us_form.fill_form(fields, **user_info)
         with allure.step("Click Send Message button"):
             self.click_continue()
         return self.get_element(ContactUsElements.CONTACT_SUBMISSION_PARAGRAPH.value, after_submission=True).text
