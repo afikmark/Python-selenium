@@ -17,7 +17,7 @@ class Forms(ABC):
 class BillingForm(Forms):
 
     def fill_form(self, inputs: dict, **fields):
-        with allure.step(f"fill name using: '{inputs['name']}'"):
+        with allure.step(f"fill name using: '{inputs['First name']}'"):
             fields['First name'].send_keys(inputs['First name'])
         with allure.step(f"fill last name using: '{inputs['Last name']}'"):
             fields['Last name'].send_keys(inputs['Last name'])

@@ -1,9 +1,13 @@
+import os
+
 import pytest
 from page_tests.base_test import TestBase
 from urls import ui_constants as uic
 import allure
 from decorators.decorators import default_logging
 from enums.page_elements import NavBarElements
+from utils.files import read_from_json
+from paths.paths import execute_path
 
 
 @allure.epic("Contact Us")
@@ -13,13 +17,7 @@ class TestContactUs(TestBase):
 
     @pytest.fixture
     def info(self) -> dict:
-        info = {
-            "name": "testername",
-            'email': 'testermail@gmail.com',
-            'subject': 'about shoes',
-            'message': 'Hi, please contact me about Black Shoes!'
-        }
-        return info
+        return read_from_json(os.path.join(execute_path, r"data\contact_us_info.json"))
 
     @pytest.fixture
     def expected_message(self) -> str:

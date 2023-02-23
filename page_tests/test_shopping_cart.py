@@ -1,3 +1,5 @@
+import os
+
 import allure
 import pytest
 
@@ -6,6 +8,8 @@ from .base_test import TestBase
 from urls import ui_constants as uic
 from decorators.decorators import default_logging
 from enums.page_elements import NavBarElements
+from utils.files import read_from_json
+from paths.paths import execute_path
 
 
 @allure.epic("Shopping cart")
@@ -46,10 +50,12 @@ class TestShoppingCart(TestBase):
             assert compare_list, f"expected {products} got {shopping_cart_products}"
 
     @pytest.fixture
-    def billing_form_inputs(self) ->dict:
-        return {'First name': 'afik', 'Last name': 'mark', 'Company': 'Afikim', 'Country': 'Israel', 'Street address': 'Herzel', 'Apartment': 'apartment',
-                'City': 'rehovot', 'State': 'israel state', 'Post code': '11110', 'Phone': '055959576', 'Email address': 'a@gmail.com', 'Order notes': 'order notes'}
+    def billing_form_inputs(self) -> dict:
+        return read_from_json(os.path.join(execute_path, r"data\billing_info.json"))
 
+    @default_logging
+    @allure.title("Buy a product test")
+    @allure.description("Test complete check-out process")
     def test_buy_product(self, nav_bar, store_page, base_page, products_page, shopping_cart, checkout_page, billing_form_inputs):
         with allure.step("Pre-requisites steps: add a product to the shopping cart"):
             with allure.step(f"Navigate to Home page: {uic.HOME_PAGE}"):
@@ -65,7 +71,7 @@ class TestShoppingCart(TestBase):
                 shopping_cart.select_shipping_method(1)
             with allure.step("Click on Checkout"):
                 shopping_cart.click_checkout()
-        with allure.step("Test the check out page"):
+        with allure.step("Test the check out process"):
             with allure.step("Fill billing form"):
                 checkout_page.fill_billing_form(billing_form_inputs)
             with allure.step("Click on 'Place Order' button"):
