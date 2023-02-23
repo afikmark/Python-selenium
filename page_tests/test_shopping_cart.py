@@ -1,8 +1,6 @@
 import os
-
 import allure
 import pytest
-
 from enums.sort import SortProducts
 from .base_test import TestBase
 from urls import ui_constants as uic

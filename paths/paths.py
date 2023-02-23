@@ -1,6 +1,6 @@
 import os
 
-#
+
 execute_path = os.path.abspath('')
 # if running from local machine
 local_profile = os.path.abspath('..//..//')
