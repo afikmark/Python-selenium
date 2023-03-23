@@ -12,6 +12,7 @@ from utils.logger import logger
 from decorators.decorators import retry
 from enums.locators import Locators
 from enum import Enum
+from .dropdown.dropdown import DropDown
 
 
 class BasePage:
@@ -117,22 +118,14 @@ class BasePage:
         wait.until(expected_conditions.title_contains(title))
 
     @staticmethod
-    def select(web_element: WebElement, index: int):
-        """
-        Receives a web element of selector type and index number
-        select an item in the selector element using the index given
-        """
-        selector = Select(web_element)
-        selector.select_by_index(index)
-
-    @staticmethod
-    def select(web_element: WebElement, value: str | Enum):
-        """
-        Receives a web element of selector type and index number
-        select an item in the selector element using the index given
-        """
-        selector = Select(web_element)
-        selector.select_by_visible_text(value)
+    def select(web_element: WebElement, value):
+        drop_down = DropDown()
+        if isinstance(value, int):
+            drop_down.select(web_element, index=value)
+        if isinstance(value, str):
+            drop_down.select(web_element, text=value)
+        else:
+            drop_down.select(web_element, value=value)
 
     def action(self, key_type: str):
         """Performs an action on the keyboard"""
