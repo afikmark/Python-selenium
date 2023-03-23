@@ -51,14 +51,14 @@ class MouseActions(Actions):
         self.action = ActionChains(driver)
         super(MouseActions, self).__init__()
 
-    def key_down_action(self, element: WebElement = None) -> None:
+    def action(self, element: WebElement = None) -> None:
         """
         This method is responsible on performing a double click mouse action in the webpage
         if provided an element, double on click an element
         """
         self.action.double_click(on_element=element)
 
-    def action(self, source: WebElement, target: WebElement) -> None:
+    def drag_and_drop(self, source: WebElement, target: WebElement) -> None:
         """
         This method is responsible on performing drag and drop action in the webpage
         """
