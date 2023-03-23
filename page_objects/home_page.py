@@ -1,7 +1,7 @@
-import allure
 from selenium.common import NoSuchElementException, TimeoutException, ElementNotInteractableException
 from utils.logger import logger
 from enums.locators import Locators
+from enums.keyboard_keys import KeyboardKeys
 from page_objects.base_page import BasePage
 from enums.page_elements import HomePageElements
 from selenium.webdriver.remote.webelement import WebElement
@@ -31,9 +31,9 @@ class HomePage(BasePage):
         try:
             self.click(self.get_element(HomePageElements.SEARCH_BUTTON.value))
             self.fill_text(self.get_element(HomePageElements.SEARCH_BAR.value), search_params)
-            self.action('enter')
+            self.key_board_action(KeyboardKeys.ENTER)
             self.explicit_wait_title_contains("Results")
-        except (NoSuchElementException, TimeoutException, ElementNotInteractableException) as e:
+        except (NoSuchElementException, TimeoutException, ElementNotInteractableException, ) as e:
             logger.exception(e)
 
     def nav_contact_us(self):
