@@ -13,6 +13,7 @@ from decorators.decorators import retry
 from enums.locators import Locators
 from enum import Enum
 from .dropdown.dropdown import DropDown
+from .actions.actions import KeyBoardActions, MouseActions
 
 
 class BasePage:
@@ -23,6 +24,8 @@ class BasePage:
         The self._wait instance variable is initialized to a WebDriverWait object with the driver and a timeout of 10 seconds.
         """
         self._driver = driver
+        self.mouse = MouseActions(driver)
+        self.keyboard = KeyBoardActions(driver)
         self._wait = WebDriverWait(self._driver, 10)
 
     @retry
@@ -37,12 +40,24 @@ class BasePage:
     def quit_driver(self) -> None:
         self._driver.quit()
 
+    def drag_and_drop(self, source: WebElement, target: WebElement) -> None:
+        """
+        drags an element to another target element
+        """
+        source = self._wait.until(expected_conditions.element_to_be_clickable(source))
+        self.mouse.action(source=source, target=target)
+
+    def double_click(self, web_element: WebElement) -> None:
+        """
+        double clicks an element
+        """
+        element = self._wait.until(expected_conditions.element_to_be_clickable(web_element))
+        self.mouse.action(element=element)
+
     def click(self, web_element: WebElement) -> None:
         """
         clicks on element if element is clickable
         if the clickable opens a new tab it is added to
-        window handles dictionary with tab title as key and the handle object
-        as value
         """
         element = self._wait.until(expected_conditions.element_to_be_clickable(web_element))
         element.click()
@@ -127,11 +142,12 @@ class BasePage:
         else:
             drop_down.select(web_element, value=value)
 
-    def action(self, key_type: str):
+    def key_board_action(self, key_type, key_down=False):
         """Performs an action on the keyboard"""
-        action = ActionChains(self._driver)
-        if key_type == 'enter':
-            action.send_keys(Keys.ENTER).perform()
+        if key_down:
+            self.keyboard.key_down_action(key_type)
+        self.keyboard.action(key_type)
+
 
     @retry
     def navigate_back(self):
