@@ -30,12 +30,12 @@ class TestShoppingCart(TestBase):
         with allure.step(f"Navigate to {NavBarElements.MEN.value} category "):
             nav_bar.navigate(NavBarElements.MEN)
         with allure.step(f"Sort price from high to low"):
-            store_page.sort_products(SortProducts.HIGH.value)
+            store_page.sort_products(SortProducts.HIGH)
         products = []
         with allure.step("Add the first four products to the shopping cart"):
             for i in range(0, 4):
                 # click on product
-                store_page.click_product(index=i)
+                store_page.click_product_by_index(index=i)
                 # add to cart
                 products_page.add_to_cart()
                 products.append(products_page.get_product_name())
@@ -61,7 +61,7 @@ class TestShoppingCart(TestBase):
             with allure.step(f"Navigate to {NavBarElements.STORE.value} category "):
                 nav_bar.navigate(NavBarElements.STORE)
             with allure.step("Add the first product"):
-                store_page.click_product(index=0)
+                store_page.click_product_by_index(index=0)
                 products_page.add_to_cart()
             with allure.step(f"Navigate to {NavBarElements.SHOPPING_CART.value}"):
                 nav_bar.navigate(NavBarElements.SHOPPING_CART)

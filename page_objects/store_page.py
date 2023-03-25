@@ -3,6 +3,7 @@ from .base_page import BasePage
 from selenium.webdriver.remote.webelement import WebElement
 from enum import Enum
 from enums.page_elements import StorePageElements
+from .dropdown.dropdown import DropDown
 
 
 class StorePage(BasePage):
@@ -19,7 +20,7 @@ class StorePage(BasePage):
     def get_element(self, element: str) -> list[WebElement] | WebElement:
         return self.store[f"{element}"]
 
-    def click_product(self, product_name: str):
+    def click_product_by_name(self, product_name: str):
         """
         Receives product name in the shop
         Clicks on it.
@@ -33,7 +34,7 @@ class StorePage(BasePage):
         except ValueError as e:
             print(e)
 
-    def click_product(self, index: int):
+    def click_product_by_index(self, index: int):
         """
         Receives product index
         Click on the product link
@@ -45,6 +46,7 @@ class StorePage(BasePage):
         except IndexError as e:
             print("Wrong index number, item not found", e)
 
-    def sort_products(self, sort_by: Enum):
+    def sort_products(self, sort_by):
         order_by_selector = self.get_element(StorePageElements.ORDER_BY.value)
-        self.select(order_by_selector, sort_by)
+        order_by_drop_down = DropDown(order_by_selector)
+        order_by_drop_down.select_text(sort_by.value)

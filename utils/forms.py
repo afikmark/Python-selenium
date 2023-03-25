@@ -25,7 +25,7 @@ class BillingForm(Forms):
             with allure.step(f"fill Company using: '{inputs['Company']}'"):
                 fields['Company name(optional)'].send_keys(inputs['Company'])
             with allure.step(f"select a Country using: '{inputs['Country']}'"):
-                BasePage.select(fields['Country/Region'], value=inputs['Country'])
+                BasePage.select_drop_down(drop_down_element=fields['Country/Region'], value=inputs['Country'])
             with allure.step(f"fill Street address using: '{inputs['Street address']}'"):
                 fields['Street address'].send_keys(inputs['Street address'])
             with allure.step(f"fill Apartment using: '{inputs['Apartment']}'"):
