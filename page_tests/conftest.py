@@ -1,3 +1,5 @@
+import os
+
 from selenium import webdriver
 from enum import Enum
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -75,13 +77,21 @@ def create_capabilities(browser_type: Enum) -> dict:
                          "if running from local machine: change to local_profile\n")
 
 
-def create_driver(browser_type: Enum, local=False) -> webdriver:
+def create_driver(browser_type: Enum) -> webdriver:
     """
     Receives browser type
     creates webdriver object
     """
+    # Get the value of the 'RUN_ENV' environment variable
+    run_env = os.environ.get('RUN_ENV')
+
     try:
-        if local:
+        if run_env == 'docker':
+            logger.info(f"Creating remote {browser_type.value} driver ")
+            return webdriver.Remote(command_executor=DOCKER_URL,
+                                    desired_capabilities=create_capabilities(browser_type),
+                                    options=create_options(browser_type))
+        else:
             match browser_type:
                 case Drivers.CHROME:
                     logger.info("Creating local Chrome Driver")
@@ -94,9 +104,5 @@ def create_driver(browser_type: Enum, local=False) -> webdriver:
                     logger.info("Creating local Edge Driver")
                     return webdriver.Edge(options=create_options(browser_type))
 
-        logger.info(f"Creating remote {browser_type.value} driver ")
-        return webdriver.Remote(command_executor=DOCKER_URL,
-                                desired_capabilities=create_capabilities(browser_type),
-                                options=create_options(browser_type))
     except WebDriverException:
         logger.exception(WebDriverException)
