@@ -84,6 +84,7 @@ def create_driver(browser_type: Enum) -> webdriver:
     """
     # Get the value of the 'RUN_ENV' environment variable
     run_env = os.environ.get('RUN_ENV')
+    print(f"RUN_ENV: {os.environ.get('RUN_ENV')}")
 
     try:
         if run_env == 'docker':
