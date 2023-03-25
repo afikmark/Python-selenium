@@ -133,21 +133,29 @@ class BasePage:
         wait.until(expected_conditions.title_contains(title))
 
     @staticmethod
-    def select(web_element: WebElement, value):
-        drop_down = DropDown()
-        if isinstance(value, int):
-            drop_down.select(web_element, index=value)
-        if isinstance(value, str):
-            drop_down.select(web_element, text=value)
-        else:
-            drop_down.select(web_element, value=value)
+    def select_drop_down(drop_down_element: WebElement, value):
+        """
+        Select an option from a drop-down element.
+        this function takes in a drop-down element and a value,
+        and uses the value to determine which option to select from the drop-down.
+        The value can be an index (int), a visible text (str), or a value attribute (any).
+        """
+        try:
+            drop_down = DropDown(drop_down_element=drop_down_element)
+            if isinstance(value, int):
+                drop_down.select_index(index=value)
+            elif isinstance(value, str):
+                drop_down.select_text(text=value)
+            else:
+                drop_down.select_value(value=value)
+        except TypeError as e:
+            logger.exception(f'Wrong Type: {value}', e)
 
     def key_board_action(self, key_type, key_down=False):
         """Performs an action on the keyboard"""
         if key_down:
             self.keyboard.key_down_action(key_type)
         self.keyboard.action(key_type)
-
 
     @retry
     def navigate_back(self):

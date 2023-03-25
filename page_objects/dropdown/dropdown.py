@@ -22,14 +22,23 @@ class DropDown(DropDownObj):
 
     @default_logging
     def select_index(self, index: int):
+        """
+        This method is responsible for selecting an item from drop down by index
+        """
         self.driver_select.select_index(element=self.drop_down, index=index)
 
     @default_logging
     def select_value(self, value):
+        """
+        This method is responsible for selecting an item from drop down by value
+        """
         self.driver_select.select_value(element=self.drop_down, value=value)
 
     @default_logging
     def select_text(self, text: str):
+        """
+        This method is responsible for selecting an item from drop down by text
+        """
         self.driver_select.select_text(element=self.drop_down, text=text)
 
     def get_drop_down_options(self) -> list:
