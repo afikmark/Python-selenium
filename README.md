@@ -8,17 +8,38 @@ https://atid.store/
 * Selenium
 
 
-### Run:
+### Runing Tests:
 Clone project to your machine
 
 make sure you have Chrome/Firefox/Edge(default on windows) installed.
 
-
-for local run add ```local=True``` in basetest.py
-
-<img width="443" alt="local run " src="https://user-images.githubusercontent.com/78296112/219883299-e0d20492-d8b2-464a-8ead-b0345e720645.png">
-
 cd to page_tests directory
+
+This project uses the RUN_ENV environment variable to control whether tests are run locally or on a docker container.
+To run tests locally, set the value of the RUN_ENV environment variable to 'local'.
+To run tests on a docker container, set the value of the RUN_ENV environment variable to 'docker'.
+Add the following prefixes before the pytest command:
+
+### Windows
+To run tests locally on a Windows machine, open a command prompt and use the following command:
+
+```set RUN_ENV=local && pytest ```
+
+To run tests on a docker container on a Windows machine, open a command prompt and use the following command:
+
+```set RUN_ENV=docker && pytest ```
+
+### Linux and macOS
+
+To run tests locally on a Linux or macOS machine, open a terminal and use the following command:
+
+```RUN_ENV=local pytest ```
+
+To run tests on a docker container on a Linux or macOS machine, open a terminal and use the following command:
+
+```RUN_ENV=docker pytest ```
+
+### running tests with allure-report:
 
 enter ```pytest --alluredir=.[project directory]\allure-results``` in the terminal.
 
