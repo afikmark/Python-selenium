@@ -25,9 +25,16 @@ To run tests locally on a Windows machine, open a command prompt and use the fol
 
 ```set RUN_ENV=local && pytest ```
 
+#### PowerShell:
+``` $env:RUN_ENV='local'; pytest```
+
 To run tests on a docker container on a Windows machine, open a command prompt and use the following command:
 
 ```set RUN_ENV=docker && pytest ```
+
+#### PowerShell:
+``` $env:RUN_ENV='docker'; pytest```
+
 
 ### Linux and macOS
 
