@@ -14,7 +14,7 @@ from paths.paths import browsers_json_remote, browsers_json_local
 
 # Get the value of the 'RUN_ENV' and 'BROWSER' environment variables
 run_env: str | None = os.environ.get('RUN_ENV')
-browser = os.environ.get('BROWSER') if os.environ.get('BROWSER') is not None else Drivers.CHROME.value
+browser: str = os.environ.get('BROWSER') if os.environ.get('BROWSER') is not None else Drivers.CHROME.value
 
 
 def create_options(browser_type: str) -> ChromeOptions | FirefoxOptions | EdgeOptions:
