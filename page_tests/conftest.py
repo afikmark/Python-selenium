@@ -7,13 +7,18 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.common import WebDriverException
 from enums.drivers import Drivers
+from enums.run_env import RunEnv
 from utils.files import read_from_json
 from utils.logger import logger
 from urls.docker import DOCKER_URL
-from paths.paths import browsers_json
+from paths.paths import browsers_json_remote, browsers_json_local
+
+# Get the value of the 'RUN_ENV' and 'BROWSER' environment variables
+run_env = os.environ.get('RUN_ENV')
+browser = os.environ.get('BROWSER')
 
 
-def create_options(browser_type: Enum) -> ChromeOptions | FirefoxOptions | EdgeOptions:
+def create_options(browser_type) -> ChromeOptions | FirefoxOptions | EdgeOptions:
     """
     Receives browser type
     creates webdriver options object matching browser type enum input
@@ -45,7 +50,7 @@ def add_arguments(options: ChromeOptions | FirefoxOptions | EdgeOptions) -> None
     logger.info("Adding argument")
 
 
-def create_capabilities(browser_type: Enum) -> dict:
+def create_capabilities(browser_type) -> dict:
     """
      Receives a browser type Enum
      defines a capabilities dictionary to pass
@@ -63,9 +68,12 @@ def create_capabilities(browser_type: Enum) -> dict:
                 "enableVideo": True
             }
         }
-        browsers = read_from_json(browsers_json)
-        browser_type_val = browser_type.value.lower()
-        version = browsers[browser_type_val]['default']
+        profile_path = browsers_json_local
+        if run_env == RunEnv.DOCKER.value:
+            profile_path = browsers_json_remote
+        browsers_path = read_from_json(profile_path)
+        browser_type_val = browser_type
+        version = browsers_path[browser_type_val]['default']
         capabilities["browserName"] = browser_type_val
         capabilities["browserVersion"] = version
         return capabilities
@@ -77,33 +85,30 @@ def create_capabilities(browser_type: Enum) -> dict:
                          "if running from local machine: change to local_profile\n")
 
 
-def create_driver(browser_type: Enum) -> webdriver:
+def create_driver() -> webdriver:
     """
     Receives browser type
     creates webdriver object
     """
-    # Get the value of the 'RUN_ENV' environment variable
-    run_env = os.environ.get('RUN_ENV')
-    print(f"RUN_ENV: {os.environ.get('RUN_ENV')}")
 
     try:
-        if run_env == 'docker':
-            logger.info(f"Creating remote {browser_type.value} driver ")
+        if run_env == RunEnv.DOCKER.value:
+            logger.info(f"Creating remote {browser} driver ")
             return webdriver.Remote(command_executor=DOCKER_URL,
-                                    desired_capabilities=create_capabilities(browser_type),
-                                    options=create_options(browser_type))
+                                    desired_capabilities=create_capabilities(browser),
+                                    options=create_options(browser))
         else:
-            match browser_type:
-                case Drivers.CHROME:
-                    logger.info("Creating local Chrome Driver")
-                    return webdriver.Chrome(options=create_options(browser_type))
-
-                case Drivers.FIREFOX:
+            match browser:
+                case Drivers.FIREFOX.value:
                     logger.info("Creating local Firefox Driver")
-                    return webdriver.Firefox(options=create_options(browser_type))
-                case Drivers.EDGE:
+                    return webdriver.Firefox(options=create_options(browser_type=browser))
+                case Drivers.EDGE.value:
                     logger.info("Creating local Edge Driver")
-                    return webdriver.Edge(options=create_options(browser_type))
+                    return webdriver.Edge(options=create_options(browser_type=browser))
+                case _:
+                    logger.info("Creating local Chrome Driver")
+                    return webdriver.Chrome(options=create_options(browser_type=Drivers.CHROME.value))
 
-    except WebDriverException:
-        logger.exception(WebDriverException)
+    except (WebDriverException, AttributeError) as e:
+        print(e)
+        logger.exception(e)
