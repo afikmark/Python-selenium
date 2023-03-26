@@ -29,12 +29,12 @@ class TestBase:
         returns the driver as a fixture for all tests to use
         """
         try:
-            driver = create_driver(Drivers.CHROME)
-            if driver.name == Drivers.FIREFOX.value.lower():
+            driver = create_driver()
+            if driver.name == 'firefox':
                 driver.maximize_window()
             return driver
-        except TimeoutException:
-            logger.exception("The request has timed out")
+        except (AttributeError, TimeoutException) as e:
+            logger.exception(e)
 
     @pytest.fixture(autouse=True)
     def screenshot_on_failure(self, request, driver):
