@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class Drivers(Enum):
-    CHROME = "chrome"
-    FIREFOX = "firefox"
-    EDGE = "edge"
+    CHROME: str = "chrome"
+    FIREFOX: str = "firefox"
+    EDGE: str = "edge"
