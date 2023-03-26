@@ -42,12 +42,14 @@ class TestBase:
         Check if test result is 'failed'
         capture screenshot and attach it to the test report in allure.
         """
-
         def finalizer():
-            if request.node.rep_call.failed:
-                allure.attach(driver.get_screenshot_as_png(), name='Screenshot', attachment_type=allure.attachment_type.PNG, body="Screenshot of the failed test")
+            try:
+                if request.node.rep_call.failed:
+                    allure.attach(driver.get_screenshot_as_png(), name='Screenshot', attachment_type=allure.attachment_type.PNG, body="Screenshot of the failed test")
 
-        request.addfinalizer(finalizer)
+                request.addfinalizer(finalizer)
+            except AttributeError as e:
+                logger.exception(e)
 
     @pytest.fixture(autouse=True)
     @default_logging
@@ -134,11 +136,14 @@ class TestBase:
         """
         retrieve current driver information
         """
-        return {
-            'name': driver.name.capitalize(),
-            'version': driver.capabilities['browserVersion'],
-            'platform': driver.capabilities['platformName'].capitalize()
-        }
+        try:
+            return {
+                'name': driver.name.capitalize(),
+                'version': driver.capabilities['browserVersion'],
+                'platform': driver.capabilities['platformName'].capitalize()
+            }
+        except AttributeError as e:
+            logger.exception(e)
 
     @pytest.fixture(autouse=True)
     @default_logging
