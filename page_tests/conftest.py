@@ -1,7 +1,6 @@
 import os
 
 from selenium import webdriver
-from enum import Enum
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
@@ -14,28 +13,28 @@ from urls.docker import DOCKER_URL
 from paths.paths import browsers_json_remote, browsers_json_local
 
 # Get the value of the 'RUN_ENV' and 'BROWSER' environment variables
-run_env = os.environ.get('RUN_ENV')
-browser = os.environ.get('BROWSER')
+run_env: str | None = os.environ.get('RUN_ENV')
+browser = os.environ.get('BROWSER') if os.environ.get('BROWSER') is not None else Drivers.CHROME.value
 
 
-def create_options(browser_type) -> ChromeOptions | FirefoxOptions | EdgeOptions:
+def create_options(browser_type: str) -> ChromeOptions | FirefoxOptions | EdgeOptions:
     """
     Receives browser type
     creates webdriver options object matching browser type enum input
     returns options object
     """
     match browser_type:
-        case Drivers.CHROME:
+        case Drivers.CHROME.value:
 
             chrome_options = webdriver.ChromeOptions()
             add_arguments(chrome_options)
             return chrome_options
 
-        case Drivers.FIREFOX:
+        case Drivers.FIREFOX.value:
             firefox_options = webdriver.FirefoxOptions()
             return firefox_options
 
-        case Drivers.EDGE:
+        case Drivers.EDGE.value:
             edge_options = webdriver.EdgeOptions()
             add_arguments(edge_options)
             return edge_options
@@ -101,12 +100,15 @@ def create_driver() -> webdriver:
             match browser:
                 case Drivers.FIREFOX.value:
                     logger.info("Creating local Firefox Driver")
+                    print("Creating local Firefox Driver")
                     return webdriver.Firefox(options=create_options(browser_type=browser))
                 case Drivers.EDGE.value:
                     logger.info("Creating local Edge Driver")
+                    print("Creating local Edge Driver")
                     return webdriver.Edge(options=create_options(browser_type=browser))
                 case _:
                     logger.info("Creating local Chrome Driver")
+                    print("Creating local Chrome Driver")
                     return webdriver.Chrome(options=create_options(browser_type=Drivers.CHROME.value))
 
     except (WebDriverException, AttributeError) as e:
