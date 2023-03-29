@@ -1,19 +1,19 @@
-from abc import ABC, abstractmethod
+from typing import Protocol
 import allure
 from decorators.decorators import default_logging
 from utils.logger import logger
 from page_objects.base_page import BasePage
 
 
-class Forms(ABC):
-    @abstractmethod
+class Forms(Protocol):
     def fill_form(self, *inputs, **input_fields):
         """
         This method is responsible to fill a form
         """
+        ...
 
 
-class BillingForm(Forms):
+class BillingForm:
 
     @default_logging
     def fill_form(self, inputs: dict, **fields):
@@ -44,8 +44,7 @@ class BillingForm(Forms):
             logger.exception(e)
 
 
-class ContactUsForm(Forms):
-
+class ContactUsForm:
     @default_logging
     def fill_form(self, *fields, **user_info):
         try:

@@ -12,7 +12,7 @@ from page_objects.shopping_cart import ShoppingCart
 from page_objects.store_page import StorePage
 from page_objects.products_page import ProductsPage
 from page_objects.checkout_page import CheckOutPage
-from .conftest import Drivers, create_driver
+from .conftest import run_env, create_driver
 from utils.files import write
 from selenium.webdriver.remote.webdriver import WebDriver
 from decorators.decorators import default_logging
@@ -20,6 +20,10 @@ from utils.logger import logger
 
 
 class TestBase:
+
+    @pytest.fixture(scope="session")
+    def run_env(self):
+        return run_env
 
     @pytest.fixture(scope="session")
     @default_logging
@@ -42,6 +46,7 @@ class TestBase:
         Check if test result is 'failed'
         capture screenshot and attach it to the test report in allure.
         """
+
         def finalizer():
             try:
                 if request.node.rep_call.failed:
@@ -147,14 +152,17 @@ class TestBase:
 
     @pytest.fixture(autouse=True)
     @default_logging
-    def write_test_details(self, test_details: dict, result_path: str, relative_result_path: str) -> None:
+    def write_test_details(self, test_details: dict, result_path: str, relative_result_path: str, run_env) -> None:
         """
         Get current driver information and writes it to environment properties file in the allure-results path
         """
         try:
             info = f'\nBrowser={test_details["name"]}\nVersion={test_details["version"]}\nPlatform={test_details["platform"]}'
-
-            write(f'{result_path or relative_result_path}/environment.properties', info)
+            if run_env == "docker":
+                test_result_path = result_path
+            else:
+                test_result_path = relative_result_path
+            write(f'{test_result_path}/environment.properties', info)
             logger.info(f"writing current driver details")
 
         except (FileNotFoundError, AttributeError) as e:

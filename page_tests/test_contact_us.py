@@ -16,8 +16,9 @@ from paths.paths import execute_path
 class TestContactUs(TestBase):
 
     @pytest.fixture
-    def info(self) -> dict:
-        return read_from_json(os.path.join(execute_path, r"data\contact_us_info.json"))
+    def info(self, run_env) -> dict:
+        contact_us_info = r"data\contact_us_info.json" if run_env == "docker" else r"..\data\contact_us_info.json"
+        return read_from_json(os.path.join(execute_path, contact_us_info))
 
     @pytest.fixture
     def expected_message(self) -> str:

@@ -1,5 +1,6 @@
 import os
 
+import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -12,7 +13,9 @@ from utils.logger import logger
 from urls.docker import DOCKER_URL
 from paths.paths import browsers_json_remote, browsers_json_local
 
+
 # Get the value of the 'RUN_ENV' and 'BROWSER' environment variables
+
 run_env: str | None = os.environ.get('RUN_ENV')
 browser: str = os.environ.get('BROWSER') if os.environ.get('BROWSER') is not None else Drivers.CHROME.value
 
