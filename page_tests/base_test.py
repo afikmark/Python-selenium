@@ -159,10 +159,10 @@ class TestBase:
         try:
             info = f'\nBrowser={test_details["name"]}\nVersion={test_details["version"]}\nPlatform={test_details["platform"]}'
             if run_env == "docker":
-                test_result_path = result_path
-            else:
                 test_result_path = relative_result_path
-            write(f'{test_result_path}/environment.properties', info)
+            else:
+                test_result_path = result_path
+            write(f'{test_result_path}\environment.properties', info)
             logger.info(f"writing current driver details")
 
         except (FileNotFoundError, AttributeError) as e:
